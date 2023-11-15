@@ -1,0 +1,35 @@
+==============================================================================================
+04/03/2022
+    controller  Pages       -> view_perjanjian_kerja
+18/03/2022
+    controller  cpayroll    -> fuction data_penggajian
+                Pages       -> function rekap_payroll
+                            -> function slip_gaji
+                Rekap       -> function export_log_data_gaji
+    view        data_penggajian     -> filter data
+
+==============================================================================================
+18/03/2022
+    controller  cpayroll    -> fuction data_penggajian_lembur
+                Pages       -> function rekap_lembur
+                            -> function slip_lembur
+                Rekap       -> function export_log_data_gaji
+                    add     -> function export_gaji_lembur_perhitungan
+    
+    Model       model_payroll
+                    add     -> function getListPeriodeLembur
+                model_karyawan
+                    add     -> function getDataLemburAllWhere
+
+    view        data_penggajian_lembur  -> function export_gaji_lembur_perhitungan
+==============================================================================================
+23/03/2022
+    Controller  
+                Rekap       -> function export_log_data_gaji
+    
+    Libraries
+                Formatter
+                    add     -> function getFormatMoneyUserNoRp()
+                            -> function pembulatanFloor()
+                Payroll 
+                    add     -> function getDataLainNamaNominalViewExcel()

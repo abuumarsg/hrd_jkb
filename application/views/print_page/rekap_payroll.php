@@ -1,0 +1,224 @@
+<style type="text/css">
+	th{
+		padding: 2px;
+		text-align: center;
+		white-space: pre;
+		/* font-size:6pt;  */
+	}
+	td{
+		padding: 2px;
+		white-space: pre; 
+		/* font-size:6pt;  */
+		height: 15px;          
+	}
+	@media print,screen {
+		@page {
+			size: Legal landscape;
+			margin: 4mm;
+		}
+        /* html, body {
+            width: 330mm;
+            height: 210mm;        
+        } */
+        /* .page {
+			size: landscape;
+            margin: 10mm;
+			padding: 20mm;
+			-webkit-transform: rotate(-90deg); 
+			-moz-transform:rotate(-90deg);
+			filter:progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+            border: initial;
+            border-radius: initial;
+            width: initial;
+            min-height: initial;
+            box-shadow: initial;
+            background: initial;
+            page-break-after: always;
+        } */
+		.box-id {
+			page-break-inside: avoid;
+			/* transform: scale(0.9, 0.9); */
+			/* page-break-after: always; */
+		}
+		.font{
+			font-size:8pt; 
+		}
+		.border{
+			border: 1px solid black;
+		}
+		.grayColor {
+			background-color: #C1C1C1 !important;
+			-webkit-print-color-adjust:exact !important;
+			print-color-adjust:exact !important;
+		}
+		.yellowColor {
+			background-color: #F7F701 !important;
+			-webkit-print-color-adjust:exact !important;
+			print-color-adjust:exact !important;
+		}
+		/* .page {
+			width: 330mm;
+			height: 210mm;
+			min-height: 297mm;
+			padding: 20mm;
+			margin: 10mm auto;
+			border: 1px #D3D3D3 solid;
+			border-radius: 5px;
+			background: white;
+			box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+		} */
+	}
+</style>
+<!-- <div class="page"> -->
+<div style="padding: 10px;">
+<div style="font-weight: bold;text-align: center;">DAFTAR GAJI CV JATI KENCANA</div>
+<div style="font-weight: bold;text-align: center;">
+	BULAN: <?php echo strtoupper($this->formatter->getMonth()[date('m',strtotime($periode['tgl_selesai']))]); ?> <?php echo date('Y',strtotime($periode['tgl_selesai'])); ?>
+	<br>
+	PERIODE : <?php echo $this->formatter->getDateMonthFormatUser($periode['tgl_mulai']).' - '.$this->formatter->getDateMonthFormatUser($periode['tgl_selesai']); ?>
+</div>
+<br>
+<!-- <div class="box-id"> -->
+<table class="border" width="100%" border="3">
+	<tr class="grayColor">
+		<th>No.</th>
+		<th>Nama</th>
+		<th>Jabatan</th>
+		<th>NIK</th>
+		<!-- <th>No Rekening</th> -->
+		<!-- <th>Lokasi Kerja</th>
+		<th>Tgl Masuk</th>
+		<th>Masa Kerja</th> -->
+		<th>Gaji Pokok</th>
+		<!-- <th>Insentif</th> -->
+		<th>Tunjangan<br>Tetap</th>
+		<th>Tunjangan<br>Tidak Tetap</th>
+		<!-- <th>Insentif</th> -->
+		<th>Ritasi</th>
+		<th>Uang Makan</th>
+		<th>Potongan<br>Tidak Masuk</th>
+		<th>BPJS TK - JHT,<br>JKK, JKM</th>
+		<th>Jaminan<br>Pensiun</th>
+		<th>BPJS<br>Kesehatan</th>
+		<th>Angsuran<br>Karyawan</th>
+		<!-- <th>Angsuran<br>Ke</th> -->
+		<!-- <th>Denda</th>
+		<th>Angsuran Denda Ke</th> -->
+		<th>Nominal & Nama<br>Lainnya</th>
+		<!-- <th> Lainnya</th> -->
+		<!-- <th>Keterangan Lainnya</th> -->
+		<th>Penerimaan<br>Bersih</th>
+		<!-- <th>No. Rekening</th> -->
+		<!-- <th>Tanggal</th> -->
+	</tr>
+	<?php
+	$no = 1;
+	$grand_total = 0 ;
+	$total_gaji_pokok = 0;
+	$total_insentif = 0;
+	$total_tunjangan_tetap = 0;
+	$total_tunjangan_non = 0;
+	$total_ritasi = 0;
+	$total_uang_makan = 0;
+	$total_pot_tidak_masuk = 0;
+	$total_bpjs_pen = 0;
+	$total_bpjs_kes = 0;
+	$total_bpjs = 0;
+	$total_angsuran = 0;
+	$total_lain = 0;
+	$total_denda = 0;
+	foreach ($emp_gaji as $e) {
+		$total_lain +=$this->payroll->getNominalDataLainNama($e->nominal_lain);
+		$angsuran_ke = (!empty($e->angsuran_ke))?' ('.$e->angsuran_ke.')':null;
+		?>
+	<tr>
+		<td><?php echo $no; ?></td>
+		<td><?php echo $e->nama_karyawan; ?></td>
+		<td><?php echo $e->nama_jabatan; ?></td>
+		<td><?php echo $e->nik; ?></td>
+		<!-- <td><?php //echo $e->no_rek; ?></td> -->
+		<!-- <td><?php //echo $e->nama_loker; ?></td>
+		<td><?php //echo $e->tgl_masuk; ?></td>
+		<td><?php //echo $e->masa_kerja; ?></td> -->
+		<td><?php echo $this->formatter->getFormatMoneyUser($e->gaji_pokok); ?></td>
+		<td><?php echo $this->formatter->getFormatMoneyUser($e->tunjangan_tetap); ?></td>
+		<td><?php echo $this->formatter->getFormatMoneyUser($e->tunjangan_non); ?></td>
+		<!-- <td><?php //echo $this->formatter->getFormatMoneyUser($e->insentif); ?></td> -->
+		<td><?php echo $this->formatter->getFormatMoneyUser($e->ritasi); ?></td>
+		<td><?php echo $this->formatter->getFormatMoneyUser($e->uang_makan); ?></td>
+		<td><?php echo $this->formatter->getFormatMoneyUser(($e->pot_tidak_masuk+$e->n_terlambat+$e->n_izin+$e->n_iskd+$e->n_imp)); ?></td>
+		<td><?php echo $this->formatter->getFormatMoneyUser(($e->bpjs_jht+$e->bpjs_jkk+$e->bpjs_jkm)); ?></td>
+		<td><?php echo $this->formatter->getFormatMoneyUser($e->bpjs_pen); ?></td>
+		<td><?php echo $this->formatter->getFormatMoneyUser($e->bpjs_kes); ?></td>
+		<td><?php echo $this->formatter->getFormatMoneyUser($e->angsuran).$angsuran_ke; ?></td>
+		<!-- <td><?php //echo $e->angsuran_ke; ?></td> -->
+		<!-- <td><?php //echo $this->formatter->getFormatMoneyUser($e->nominal_denda); ?></td> -->
+		<!-- <td><?php //echo $e->angsuran_ke_denda; ?></td> -->
+		<!-- <td><?php //echo $this->payroll->getDataLainView($e->data_lain)?></td> -->
+		<td><?php echo $this->payroll->getDataLainNamaNominalView($e->data_lain, $e->data_lain_nama, $e->nominal_lain)?></td>
+		<!-- <td><?php //echo $this->payroll->getDataLainNominalView($e->nominal_lain)?></td> -->
+		<!-- <td><?php //echo $this->payroll->getDataLainView($e->keterangan_lain)?></td> -->
+		<td><?php echo $this->formatter->getFormatMoneyUser($e->gaji_bersih); ?></td>
+		<!-- <td><?php //echo $e->no_rek; ?></td> -->
+		<!-- <td><?php //echo $this->formatter->getDateMonthFormatUser($periode['tgl_transfer']); ?></td> -->
+	</tr>
+	<?php
+		$total_gaji_pokok += $e->gaji_pokok;
+		$total_insentif += $e->insentif;
+		$total_tunjangan_tetap += $e->tunjangan_tetap;
+		$total_tunjangan_non += $e->tunjangan_non;
+		$total_ritasi += $e->ritasi;
+		$total_uang_makan += $e->uang_makan;
+		$total_pot_tidak_masuk += ($e->pot_tidak_masuk+$e->n_terlambat+$e->n_izin+$e->n_iskd+$e->n_imp);
+		$total_bpjs_pen += $e->bpjs_pen;
+		$total_bpjs_kes += $e->bpjs_kes;
+		$total_bpjs += ($e->bpjs_jht+$e->bpjs_jkk+$e->bpjs_jkm);
+		$total_angsuran += $e->angsuran;
+		$total_denda += $e->nominal_denda;
+		$grand_total += $e->gaji_bersih;
+		$no++;
+	}
+?>
+	<tr class="yellowColor">
+		<td class="font"></td>
+		<td class="font" style="font-size:12pt;"><b>TOTAL</b></td>
+		<td class="font" style="font-size:12pt;"></td>
+		<td class="font" style="font-size:12pt;"></td>
+		<!-- <td class="font" style="font-size:12pt;"></td> -->
+		<td class="font" style="font-size:12pt;"><b><?php echo $this->formatter->getFormatMoneyUser($total_gaji_pokok);?></b></td>
+		<td class="font" style="font-size:12pt;"><b><?php echo $this->formatter->getFormatMoneyUser($total_tunjangan_tetap);?></b></td>
+		<td class="font" style="font-size:12pt;"><b><?php echo $this->formatter->getFormatMoneyUser($total_tunjangan_non);?></b></td>
+		<!-- <td class="font" style="font-size:12pt;"><b><?php //echo $this->formatter->getFormatMoneyUser($total_insentif);?></b></td> -->
+		<td class="font" style="font-size:12pt;"><b><?php echo $this->formatter->getFormatMoneyUser($total_ritasi);?></b></td>
+		<td class="font" style="font-size:12pt;"><b><?php echo $this->formatter->getFormatMoneyUser($total_uang_makan);?></b></td>
+		<td class="font" style="font-size:12pt;"><b><?php echo $this->formatter->getFormatMoneyUser($total_pot_tidak_masuk);?></b></td>
+		<td class="font" style="font-size:12pt;"><b><?php echo $this->formatter->getFormatMoneyUser($total_bpjs);?></b></td>
+		<td class="font" style="font-size:12pt;"><b><?php echo $this->formatter->getFormatMoneyUser($total_bpjs_pen);?></b></td>
+		<td class="font" style="font-size:12pt;"><b><?php echo $this->formatter->getFormatMoneyUser($total_bpjs_kes);?></b></td>
+		<td class="font" style="font-size:12pt;"><b><?php echo $this->formatter->getFormatMoneyUser($total_angsuran);?></b></td>
+		<!-- <td class="font" style="font-size:12pt;"></td> -->
+		<!-- <td class="font" style="font-size:12pt;"><?php //echo $this->formatter->getFormatMoneyUser($total_denda);?></td>
+		<td class="font" style="font-size:12pt;"></td> -->
+		<td class="font" style="font-size:12pt;"><b><?php echo $this->formatter->getFormatMoneyUser($total_lain);?></b></td>
+		<td class="font" style="font-size:12pt;"><b><?php echo $this->formatter->getFormatMoneyUser($grand_total);?></b></td>
+	</tr>
+</table>
+<!-- </div> -->
+<table width="100%" style="margin-top: 20px;">
+	<tr>
+		<td colspan="2" style="text-align: right;padding-right: 10px;">Karangjati, <?php echo date('d').' '.$this->formatter->getMonth()[date('m')].' '.date('Y'); ?></td>
+	</tr>
+	<tr width="50%">
+		<td style="text-align: center;">Menyetujui</td>
+		<td style="text-align: center;">Dibuat Oleh</td>
+	</tr>
+	<tr width="50%">
+		<td style="padding-top: 100px;"></td>
+		<td style="padding-top: 100px;"></td>
+	</tr>
+	<tr width="50%">
+		<td style="text-align: center;"><?=$menyetujui?></td>
+		<td style="text-align: center;"><?=$nama_buat?></td>
+	</tr>
+</table>
+</div>

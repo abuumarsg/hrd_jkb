@@ -1,0 +1,53 @@
+{
+  "name": "emoji.css",
+  "version": "1.0.3",
+  "description": "Your website. Emojified. Like FontAwesome for emojis.",
+  "main": "lib/index.js",
+  "keywords": [
+    "ascii",
+    "awesome",
+    "css",
+    "framework"
+  ],
+  "author": "Ionică Bizău <bizauionica@gmail.com> (https://ionicabizau.net)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/IonicaBizau/emoji.css/issues"
+  },
+  "homepage": "https://github.com/IonicaBizau/emoji.css",
+  "directories": {
+    "example": "example"
+  },
+  "dependencies": {
+    "absurd": "^0.3.5",
+    "bug-killer": "^4.0.0",
+    "emojilib": "^2.0.2",
+    "iterate-object": "^1.1.0",
+    "regex-escape": "^3.4.1",
+    "string-length": "^1.0.1"
+  },
+  "devDependencies": {},
+  "files": [
+    "bin/",
+    "app/",
+    "lib/",
+    "dist/",
+    "src/",
+    "scripts/",
+    "resources/",
+    "menu/",
+    "cli.js",
+    "index.js",
+    "bloggify.js",
+    "bloggify.json",
+    "bloggify/"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/IonicaBizau/emoji.css.git"
+  },
+  "blah": {
+    "h_img": "http://i.imgur.com/M4Rh3z3.png",
+    "h_url": "https://ionicabizau.github.io/emoji.css/"
+  }
+}
