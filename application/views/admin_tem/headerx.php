@@ -609,7 +609,7 @@ onscroll="reset_interval()">
     var value_agreement_end=$('#value_agreement_end');
     var count_lembur_end=$('#id_lembur').val();
     $(document).ready(function() {
-      refreshAgree();refreshMsg();refreshKuotaLembur();refreshAlpa();refreshIzinCuti();
+      // refreshAgree();refreshMsg();refreshKuotaLembur();refreshAlpa();refreshIzinCuti();
       // alert(count_lembur_end);
       if(count_lembur_end == 1){
         refreshLembur();

@@ -3621,14 +3621,6 @@ class Presensi extends CI_Controller
 				if(!empty($input_nominal_bbm) && !empty($kendaraan_umum)){
 					$nominal_bbm = $this->formatter->getFormatMoneyDb($input_nominal_bbm);
 				}
-				// echo '<pre>';
-				// print_r($search);
-				// echo 'kendaraan = '.$kendaraan.'<br>';
-				// echo 'kendaraan_umum = '.$kendaraan_umum.'<br>';
-				// echo 'jarak_antar_plant = '.$jarak_antar_plant.'<br>';
-				// echo 'jarak = '.$jarak.'<br>';
-				// echo 'nominal_bbm = '.$nominal_bbm.'<br>';
-				// echo 'jjKendaraan = '.$jKendaraan.'<br>';
 				$datax=[
 					'nominal_bbm'=>$this->formatter->getFormatMoneyUser($nominal_bbm),
 					'nominal_bbm_all'=>$this->formatter->getFormatMoneyUser($nominal_bbm*$jKendaraan),
@@ -3678,20 +3670,20 @@ class Presensi extends CI_Controller
 						$aksesAdmin=$this->admin;
 					}
 				}
-				$param = $this->input->post('param');
+				$status = $this->input->post('status');
 				$param = $this->input->post('param');
 				if($param == 'all'){
 					$skrg = gmdate("Y-m-d", time() + 3600*(7)); ;
 					$tgl_mulai = $this->formatter->getDateFormatUser(date('Y-m-d', strtotime($skrg . ' -30 day')));
 					$tgl_sampai = $this->formatter->getDateFormatUser(date('Y-m-d', strtotime($skrg . ' +10 day')));
 					$tanggal = $tgl_mulai.' - '.$tgl_sampai;
-					$where = ['param'=>'search','bagian'=>null,'unit'=>null,'tanggal'=>$tanggal];
+					$where = ['param'=>'search','bagian'=>null,'unit'=>null,'tanggal'=>$tanggal,'status'=>$status];
 					$data=$this->model_karyawan->getPerjalananDinasPerTransaksi($aksesAdmin,'search',$where,'cari');
 				}else{
 					$bagian = $this->input->post('bagian');
 					$unit = $this->input->post('unit');
 					$tanggal = $this->input->post('tanggal');
-					$where = ['param'=>'search','bagian'=>$bagian,'unit'=>$unit,'tanggal'=>$tanggal];
+					$where = ['param'=>'search','bagian'=>$bagian,'unit'=>$unit,'tanggal'=>$tanggal,'status'=>$status];
 					$data=$this->model_karyawan->getPerjalananDinasPerTransaksi($aksesAdmin,'search',$where,'cari');
 				}
 				$access=$this->codegenerator->decryptChar($this->input->post('access'));
@@ -3735,13 +3727,23 @@ class Presensi extends CI_Controller
 						$print = null;
 					}
 					$koreksi = null;
-					if($d->status_pd == '2' || $d->status_pd == '3'){
-						$koreksi = '<br><a type="button" class="btn btn-info btn-xs" href="'.base_url('pages/koreksi_perjalanan_dinas/'.$noPerDin).'" target="blank" style="margin-top:10px;"><i class="fa fa-edit"></i> Koreksi</a> ';
+					$labelKoreksi = null;
+					if (isset($access['l_ac']['koreksi_perdin'])) {
+						if(in_array($access['l_ac']['koreksi_perdin'], $access['access'])){
+							if($d->status_pd == '2' || $d->status_pd == '3'){
+								if(empty($d->no_sk_koreksi)){
+									$labelKoreksi = '<br><label class="label label-warning">Belum Koreksi</label>';
+								}else{
+									$labelKoreksi = '<br><label class="label label-success">Sudah Koreksi</label>';
+								}
+								$koreksi = '<br><a type="button" class="btn btn-info btn-xs" href="'.base_url('pages/koreksi_perjalanan_dinas/'.$noPerDin).'" target="blank" style="margin-top:10px;"><i class="fa fa-edit"></i> Koreksi</a> ';
+							}
+						}
 					}
 					$tujuan=($d->plant=='plant')?$d->nama_plant_tujuan:$d->lokasi_tujuan;
 					$datax['data'][]=[
 						$d->id_pd,
-						$d->no_sk,
+						$d->no_sk.$labelKoreksi,
 						$this->formatter->getDateTimeMonthFormatUser($d->tgl_berangkat,1).' -<br>'.$this->formatter->getDateTimeMonthFormatUser($d->tgl_sampai,1),
 						$d->nama_plant_asal,
 						$tujuan,
@@ -5587,6 +5589,7 @@ class Presensi extends CI_Controller
 		if(!empty($dataPerdin)){
 			foreach ($dataPerdin as $dp) {
 				$newD = $this->model_karyawan->getPerjalananDinasID($dp->id_pd, null, true);
+				unset($newD['id_pd']);
 				unset($newD['nama_buat']);
 				unset($newD['nama_update']);
 				unset($newD['nama_karyawan']);

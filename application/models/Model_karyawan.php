@@ -3395,9 +3395,11 @@ class Model_karyawan extends CI_Model
 				}
 				$bagian = ($where['bagian']!=null) ? " h.kode_bagian = '".$where['bagian']."' " : '';
 				$unit = ($where['unit']!=null) ? " f.kode_loker = '".$where['unit']."' " : '';
+				$statusK = ($where['status']=='belum') ? " kor.no_sk IS NULL" : " kor.no_sk IS NOT NULL";
+				$statusKoreksi = (empty($where['status']) ? "" : $statusK );
 				$tgl_mulai = ($tanggal_mulai !=null) ? " a.tgl_berangkat >= '".$tanggal_mulai."' " : '';	
 				$tgl_selesai = ($tanggal_selesai !=null) ? " a.tgl_berangkat <= '".$tanggal_selesai."' " : '';
-				$all_query = [$bagian,$unit,$tgl_mulai,$tgl_selesai];
+				$all_query = [$bagian, $unit, $tgl_mulai, $tgl_selesai, $statusKoreksi];
 				$nquery = array_filter($all_query);
 				$nquery = implode(' AND ',$nquery);
 				if($mode == 'cari'){
@@ -3431,7 +3433,8 @@ class Model_karyawan extends CI_Model
 		m.nama as nama_kendaraan_j,
 		n.nama as nama_plant_tujuan,
 		o.nama as nama_plant_asal,
-		p.nama as nama_val_kendaraan
+		p.nama as nama_val_kendaraan,
+		kor.no_sk as no_sk_koreksi
 		FROM data_perjalanan_dinas a
 		LEFT JOIN admin b ON b.id_admin = a.create_by 
 		LEFT JOIN admin c ON c.id_admin = a.update_by
@@ -3447,6 +3450,7 @@ class Model_karyawan extends CI_Model
 		LEFT JOIN master_loker n ON n.kode_loker = a.plant_tujuan
 		LEFT JOIN master_loker o ON o.kode_loker = a.plant_asal
 		LEFT JOIN master_pd_kendaraan p ON p.kode = a.val_kendaraan
+		LEFT JOIN data_perjalanan_dinas_koreksi kor ON kor.no_sk = a.no_sk
 		$next GROUP BY no_sk ORDER BY update_date DESC";
 		$query=$this->db->query($sc)->result();
 		return $query;

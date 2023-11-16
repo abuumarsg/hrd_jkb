@@ -57,27 +57,47 @@ table.DTFC_Cloned tbody{
 											<input type="hidden" name="param" value="all">
 											<input type="hidden" name="mode" value="data">
 											<div class="box-body">
-												<div class="col-md-4">
-													<div class="form-group">
-														<label>Pilih Bagian</label>
-														<select class="form-control select2" id="bagian_export_trans" name="bagian_export_trans" style="width: 100%;"></select>
+												<div class="col-md-12">
+													<div class="col-md-4">
+														<div class="form-group">
+															<label>Pilih Bagian</label>
+															<select class="form-control select2" id="bagian_export_trans" name="bagian_export_trans" style="width: 100%;"></select>
+														</div>
 													</div>
-												</div>
-												<div class="col-md-4">
-													<div class="form-group">
-														<label>Pilih Lokasi Kerja</label>
-														<select class="form-control select2" id="unit_export_trans" name="unit_export_trans" style="width: 100%;"></select>
+													<div class="col-md-4">
+														<div class="form-group">
+															<label>Pilih Lokasi Kerja</label>
+															<select class="form-control select2" id="unit_export_trans" name="unit_export_trans" style="width: 100%;"></select>
+														</div>
 													</div>
-												</div>
-												<div class="col-md-4">
-													<div class="">
-														<label>Tanggal</label>
-														<div class="has-feedback">
-															<span class="fa fa-calendar form-control-feedback"></span>
-															<input type="text" class="form-control date-range-notime" id="tanggal_filter_trans" name="tanggal_filter" placeholder="Tanggal">
+													<div class="col-md-4">
+														<div class="">
+															<label>Tanggal</label>
+															<div class="has-feedback">
+																<span class="fa fa-calendar form-control-feedback"></span>
+																<input type="text" class="form-control date-range-notime" id="tanggal_filter_trans" name="tanggal_filter" placeholder="Tanggal">
+															</div>
 														</div>
 													</div>
 												</div>
+												<?php 
+													if (isset($access['l_ac']['koreksi_perdin'])) {
+														if(in_array($access['l_ac']['koreksi_perdin'], $access['access'])){
+															echo '<div class="col-md-12">
+																<div class="col-md-4">
+																	<div class="form-group">
+																		<label>Status Koreksi</label>
+																		<select class="form-control select2" name="status_koreksi" id="status_koreksi_filter" style="width: 100%;">
+																			<option value="">Pilih Data<option>
+																			<option value="belum">Belum dikoreksi<option>
+																			<option value="sudah">Sudah dikoreksi<option>
+																		</select>
+																	</div>
+																</div>
+															</div>';
+														}
+													}
+												?>
 											</div>
 											<div class="box-footer">
 												<div class="col-md-12">
@@ -1811,7 +1831,8 @@ table.DTFC_Cloned tbody{
 			var bagian = $('#bagian_export_trans').val();
 			var unit = $('#unit_export_trans').val();
 			var tanggal = $('#tanggal_filter_trans').val();
-			var datax = {param:'search',bagian:bagian,unit:unit,tanggal:tanggal,access:"<?php echo $this->codegenerator->encryptChar($access);?>"};
+			var status = $('#status_koreksi_filter').val();
+			var datax = {param:'search',bagian:bagian,unit:unit,tanggal:tanggal,status:status,access:"<?php echo $this->codegenerator->encryptChar($access);?>"};
 		}
 		$('#table_data_trans').DataTable().destroy();
 		$('#table_data_trans').DataTable( {

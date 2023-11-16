@@ -1498,15 +1498,6 @@ class Otherfunctions {
                 ];
             }
 		}else{
-            // echo '<pre>';
-            // echo $val.'_id.'.$umur;
-            // echo '<br>';
-            // print_r($date1);
-            // echo '<br>';
-            // print_r($date2);
-            // echo '<br>';
-            // print_r($interval);
-            // echo '<br>';
 			if($interval->m > 0){
 				$new_val = $interval->m.'Bulan '.$interval->d.'Hari';
 			}else{
@@ -2749,7 +2740,7 @@ class Otherfunctions {
     {
         return $this->CI->model_global->insertQuery(['flag'=>$flag,'keterangan'=>$keterangan,'datetime'=>$datetime,'tahun'=>$tahun],'history_reset_cuti');
     }
-    public function syncResetCuti($datetime)
+    public function syncResetCutiOLD($datetime)
     {
 		$date = $this->CI->formatter->getDayMonthYearsHourMinute($datetime);
 		if(($date['hari'] == '01' && $date['bulan'] == '01') || ($date['hari'] == '02' && $date['bulan'] == '01') || ($date['hari'] == '03' && $date['bulan'] == '01') || ($date['hari'] == '04' && $date['bulan'] == '01') || ($date['hari'] == '05' && $date['bulan'] == '01') || ($date['hari'] == '06' && $date['bulan'] == '01')){
@@ -2800,6 +2791,69 @@ class Otherfunctions {
 					$sisaCuti = (($sisaCutiDB >= $cutiReal) ? $cutiReal : $sisaCutiDB);
 					$datax = $this->CI->model_global->updateQuery(['sisa_cuti' => $sisaCuti],'karyawan',['id_karyawan'=>$k->id_karyawan]);
 				}
+				$this->insertToHistoryResetCuti('SYNC JULI', 'Sinkron Data Cuti Juli Berhasil', $datetime, $date['tahun']);
+                $datax = 'true';
+			}else{
+                $datax = 'false';
+            }
+        }else{
+            $datax = 'false';
+        }
+        return $datax;
+    }
+    public function syncResetCuti($datetime)
+    {
+		$date = $this->CI->formatter->getDayMonthYearsHourMinute($datetime);
+		if(($date['hari'] == '01' && $date['bulan'] == '01') || ($date['hari'] == '02' && $date['bulan'] == '01') || ($date['hari'] == '03' && $date['bulan'] == '01') || ($date['hari'] == '04' && $date['bulan'] == '01') || ($date['hari'] == '05' && $date['bulan'] == '01') || ($date['hari'] == '06' && $date['bulan'] == '01')){
+			$history=$this->CI->model_master->getHistoryResetCuti("tahun='".$date['tahun']."' AND flag='SYNC JAN' AND status='1'");
+			if(empty($history)){
+                $emp = $this->CI->model_karyawan->getEmployeeWhere(['emp.status_emp'=>'1']);
+                $CutiBersama=$this->CI->model_master->getCutiBersamaTanggal($date['tahun']);
+                $jCB = 0;
+                if(!empty($CutiBersama)){
+                    $jCB = count($CutiBersama);
+                }
+				foreach ($emp as $e) {
+					$now=date('Y-m-d');
+					$masa_kerja = $this->CI->formatter->getCountDateRange($e->tgl_masuk,$now)['bulan_pay'];
+					if ($masa_kerja > 12) {
+                        $sisaCutiDB = (($e->sisa_cuti < 0) ? 0 : $e->sisa_cuti);
+						$sisa_cuti = (12-$jCB)+($sisaCutiDB);
+						$data = [
+							'sc_old' => $sisaCutiDB,
+							'sisa_cuti' => $sisa_cuti,
+						];
+						$datax = $this->CI->model_global->updateQuery($data,'karyawan',['id_karyawan'=>$e->id_karyawan]);
+					}else{
+						$data = [
+							'sc_old' => 0,
+							'sisa_cuti' => 0,
+						];
+						$datax = $this->CI->model_global->updateQuery($data,'karyawan',['id_karyawan'=>$e->id_karyawan]);
+					}
+				}
+                $this->model_global->updateQuery(['status'=>'0'],'history_reset_cuti',['tahun'=>($date['tahun']-1), 'flag'=>'SYNC JULI']);
+				$this->insertToHistoryResetCuti('SYNC JAN', 'Sinkron Data Cuti Berhasil', $datetime, $date['tahun']);
+                $datax = 'true';
+			}else{
+                $datax = 'false';
+			}
+		}elseif(($date['hari'] == '01' && $date['bulan'] == '07') || ($date['hari'] == '02' && $date['bulan'] == '07') || ($date['hari'] == '03' && $date['bulan'] == '07') || ($date['hari'] == '04' && $date['bulan'] == '07') || ($date['hari'] == '05' && $date['bulan'] == '07') || ($date['hari'] == '06' && $date['bulan'] == '07')){
+			$history=$this->CI->model_master->getHistoryResetCuti("tahun='".$date['tahun']."' AND flag='SYNC JULI' AND status='1'");
+			if(empty($history)){
+                $emp = $this->CI->model_karyawan->getEmployeeWhere(['emp.status_emp'=>'1']);
+                $CutiBersama=$this->CI->model_master->getCutiBersamaTanggal($date['tahun']);
+                $jCB = 0;
+                if(!empty($CutiBersama)){
+                    $jCB = count($CutiBersama);
+                }
+				$cutiReal = (12-$jCB);
+				foreach ($emp as $k) {
+					$sisaCutiDB = (($k->sisa_cuti < 0) ? 0 : $k->sisa_cuti);
+					$sisaCuti = (($sisaCutiDB >= $cutiReal) ? $cutiReal : $sisaCutiDB);
+					$datax = $this->CI->model_global->updateQuery(['sisa_cuti' => $sisaCuti],'karyawan',['id_karyawan'=>$k->id_karyawan]);
+				}
+                $this->model_global->updateQuery(['status'=>'0'],'history_reset_cuti',['tahun'=>$date['tahun'], 'flag'=>'SYNC JAN']);
 				$this->insertToHistoryResetCuti('SYNC JULI', 'Sinkron Data Cuti Juli Berhasil', $datetime, $date['tahun']);
                 $datax = 'true';
 			}else{
