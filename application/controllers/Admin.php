@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	/**
      * Code From GFEACORP.
      * Web Developer
-     * @author      Galeh Fatma Eko Ardiansa
+     * @author      ABU UMAR
      * @package     Otherfunctions
      * @copyright   Copyright (c) 2018 GFEACORP
      * @version     1.0, 1 September 2018
