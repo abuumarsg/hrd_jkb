@@ -8,8 +8,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
      * @package     Otherfunctions
      * @copyright   Copyright (c) 2018 GFEACORP
      * @version     1.0, 1 September 2018
-     * Email        galeh.fatma@gmail.com  
-     * Phone        (+62) 85852924304  
+     * Email        abuumarsg@gmail.com  
+     * Phone        (+62) 85725951044  
      */      
   
 class Admin extends CI_Controller
