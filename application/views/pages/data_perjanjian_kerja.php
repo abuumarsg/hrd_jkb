@@ -446,8 +446,8 @@
 			]
 		});
 	}
-	function refreshCode() {
-		kode_generator("<?php echo base_url('employee/perjanjian_kerja/kode');?>",'no_sk_baru_add');
+	function refreshCode(param='PKWT') {
+		kode_generator("<?php echo base_url('employee/perjanjian_kerja/kode/');?>"+param,'no_sk_baru_add');
 	}
 	function view_modal(id) {
 		var data={id_p_kerja:id};
@@ -525,19 +525,24 @@
 		var data=$('#form_filter').serialize();
 		window.location.href = "<?php echo base_url('rekap/export_perjanjian_kerja')?>?"+data;
 	}
-   function cekKodePerjanjian(kode_perjanjian) {
-      var status = $('#data_perjanjian_add').val();
-		if(status=='PTSP'){
-			$('#div_nonaktif').show();
-		}else if(status=='RSGN'){
-			$('#div_nonaktif').show();
+	function cekKodePerjanjian(kode_perjanjian) {
+		var status = $('#data_perjanjian_add').val();
+			if(status=='PTSP'){
+				$('#div_nonaktif').show();
+			}else if(status=='RSGN'){
+				$('#div_nonaktif').show();
+			}else{
+				$('#div_nonaktif').hide();
+			}
+		var data={kode:status};
+		var callback=getAjaxData("<?php echo base_url('employee/cek_kode_perjanjian')?>",data);
+		$('#status_karyawan').html(callback['status_karyawan']);
+		if(callback['nama_status'] == 'TETAP'){
+			refreshCode('JK');
 		}else{
-			$('#div_nonaktif').hide();
+			refreshCode();
 		}
-      var data={kode:status};
-      var callback=getAjaxData("<?php echo base_url('employee/cek_kode_perjanjian')?>",data);
-      $('#status_karyawan').html(callback['status_karyawan']);
-   }
+	}
 	$(document).on('click', '.pilih', function (e1) {
 		$("#nik").val($(this).data('nik'));
 		$("#nama").val($(this).data('nama'));

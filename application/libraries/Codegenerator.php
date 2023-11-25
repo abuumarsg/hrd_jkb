@@ -488,8 +488,8 @@ class Codegenerator{
     public function kodeSkMutasi(){
         return $this->logicGenerator('data_mutasi_jabatan', 'no_sk', 'id_mutasi', 'MUT','kecelakaan_kerja');
     }
-    public function kodePerjanjianKerja(){
-        return $this->logicGenerator('data_perjanjian_kerja', 'no_sk_baru', 'create_date', 'PKWT','kecelakaan_kerja');
+    public function kodePerjanjianKerja($kode = 'PKWT'){
+        return $this->logicGenerator('data_perjanjian_kerja', 'no_sk_baru', 'create_date', $kode,'kecelakaan_kerja');
     }
     public function kodePeringatanKerja(){
         return $this->logicGenerator('data_peringatan_karyawan', 'no_sk', 'id_peringatan', 'SP','kecelakaan_kerja');
