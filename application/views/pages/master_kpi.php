@@ -48,33 +48,33 @@
                       ?>
                       <?php
                       if(in_array('IMP', $access['access'])){?>
-                         <div class="modal fade" id="import" role="dialog">
-                          <div class="modal-dialog">
-                            <div class="modal-content text-center">
-                              <div class="modal-header">
-                                <button type="button" class="close all_btn_import" data-dismiss="modal">&times;</button>
-                                <h4 class="modal-title">Import Data Dari Excel</h4>
+                          <div class="modal fade" id="import" role="dialog">
+                            <div class="modal-dialog">
+                              <div class="modal-content text-center">
+                                <div class="modal-header">
+                                  <button type="button" class="close all_btn_import" data-dismiss="modal">&times;</button>
+                                  <h4 class="modal-title">Import Data Dari Excel</h4>
+                                </div>
+                              <form id="form_import" action="#">
+                                <div class="modal-body">
+                                  <p class="text-muted">File Data Template Master KPI harus tipe *.xls, *.xlsx, *.csv, *.ods dan *.ots</p>
+                                  <input id="uploadFilex" placeholder="Nama File" readonly="readonly" class="form-control" required="required">
+                                  <span class="input-group-btn">
+                                    <div class="fileUpload btn btn-warning">
+                                      <span><i class="fa fa-folder-open"></i> Pilih File</span>
+                                      <input id="uploadBtnx" type="file" class="upload" name="file" onchange="checkFile('#uploadBtnx','#uploadFilex','#save')" />
+                                    </div>
+                                  </span>                              
+                                </div> 
+                                <div class="modal-footer">
+                                  <div id="progress2" style="float: left;"></div>
+                                  <button class="btn btn-primary all_btn_import" id="save" type="button" disabled style="margin-right: 4px;"><i class="fa fa-check-circle"></i> Upload</button>
+                                  <button id="savex" type="submit" style="display: none;"></button>
+                                  <button type="button" class="btn btn-default all_btn_import" data-dismiss="modal">Kembali</button>
+                                </div>
+                              </form>
                               </div>
-                            <form id="form_import" action="#">
-                              <div class="modal-body">
-                                <p class="text-muted">File Data Template Master KPI harus tipe *.xls, *.xlsx, *.csv, *.ods dan *.ots</p>
-                                <input id="uploadFilex" placeholder="Nama File" readonly="readonly" class="form-control" required="required">
-                                <span class="input-group-btn">
-                                  <div class="fileUpload btn btn-warning">
-                                    <span><i class="fa fa-folder-open"></i> Pilih File</span>
-                                    <input id="uploadBtnx" type="file" class="upload" name="file" onchange="checkFile('#uploadBtnx','#uploadFilex','#save')" />
-                                  </div>
-                                </span>                              
-                              </div> 
-                              <div class="modal-footer">
-                                <div id="progress2" style="float: left;"></div>
-                                <button class="btn btn-primary all_btn_import" id="save" type="button" disabled style="margin-right: 4px;"><i class="fa fa-check-circle"></i> Upload</button>
-                                <button id="savex" type="submit" style="display: none;"></button>
-                                <button type="button" class="btn btn-default all_btn_import" data-dismiss="modal">Kembali</button>
-                              </div>
-                            </form>
                             </div>
-                          </div>
                           </div>
                         <?php } ?>
                         </div>
@@ -84,124 +84,125 @@
                         </div>
                       </div>
                     </div>
-                    <?php if(in_array('ADD', $access['access'])){?>
-                      <div class="collapse" id="add">
-                        <br>
-                        <div class="col-md-2"></div>
-                        <div class="col-md-8">
-                          <form id="form_add">
-                            <div class="form-group">
-                              <label>Kode KPI</label>
-                              <input type="text" placeholder="Masukkan Kode KPI" name="kode" class="form-control" id="data_kode_add" readonly="readonly">
-                            </div>
-                            <div class="form-group">
-                              <label>KPI</label>
-                              <textarea name="kpi" class="form-control" placeholder="Masukkan KPI" style="padding-top: 10px;"></textarea>
-                            </div>
-                            <!-- <div class="form-group">
-                              <label>Perumusan</label>
-                              <br><p class="text-muted">Jika Bobot Penalty Parameter[A]=<b style="background-color: yellow;color: #000;"> 5</b>% dan Parameter [B]=<b style="background-color: yellow;color: #000;"> 10</b>% maka isikan <b style="background-color: yellow;color: #000;"> 5;10 </b></p>
-                              <p class="text-muted">Kosongkan Jika Tidak Berlaku Perumusan</p>
-                              <input type="text" placeholder="Masukkan Rumus" name="rumus" class="form-control">
-                            </div> -->
-                            <div class="form-group">
-                              <label>Unit / Satuan</label>
-                              <input type="text" placeholder="Masukkan Unit / Satuan" name="unit" class="form-control" required="required">
-                            </div>
-                            <div class="form-group">
-                              <label>Detail Rumus</label>
-                              <textarea name="detail_rumus" class="form-control" placeholder="Masukkan Detail Rumus" style="padding-top: 10px;"></textarea>
-                            </div>
-                            <div class="form-group">
-                              <label>Sumber Data</label>
-                              <input type="text" placeholder="Masukkan Sumber Data" name="sumber_data" class="form-control" required="required">
-                            </div>
-                            <div class="form-group">
-                              <label>Cara Menghitung</label>
-                              <select class="form-control select2" style="width: 100%;" name="cara_menghitung" id="data_cara_menghitung_add">
-                              </select>
-                            </div>
-                            <div class="form-group">
-                              <label>Kaitan Nilai</label>
-                              <?php
-                              $sel = array(null);
-                              $ex = array('class'=>'form-control select2','style'=>'width:100%;','required'=>'required','id'=>'data_kaitan_add');
-                              echo form_dropdown('kaitan',$kaitan,$sel,$ex);
-                              ?>
-                            </div>
-                            <div class="form-group">
-                              <label>Jenis Satuan</label>
-                              <?php
-                              $sel1 = array(null);
-                              $ex1 = array('class'=>'form-control select2','style'=>'width:100%;','required'=>'required','id'=>'data_jenis_satuan_add');
-                              echo form_dropdown('jenis_satuan',$jenis_satuan,$sel1,$ex1);
-                              ?>
-                            </div>
-                            <div class="form-group">
-                              <label>Sifat</label>
-                              <?php
-                              $sel3 = array(null);
-                              $ex3 = array('class'=>'form-control select2','style'=>'width:100%;','required'=>'required','id'=>'data_sifat_add');
-                              echo form_dropdown('sifat',$sifat,$sel3,$ex3);
-                              ?>
-                            </div>
-                            <div class="form-group">
-                              <label>Untuk Bagian Jabatan</label>
-                              <select class="form-control select2" style="width: 100%;" name="bagian" id="data_bagian_add">
-                              </select>
-                            </div>
-                            <div id="show_min_max_add">
+                      <?php if(in_array('ADD', $access['access'])){?>
+                        <div class="collapse" id="add">
+                          <br>
+                          <div class="col-md-2"></div>
+                          <div class="col-md-8">
+                            <form id="form_add">
                               <div class="form-group">
-                                <label>Nilai Minimal</label>
-                                <input type="text" placeholder="Masukkan Minimal" name="min" class="form-control">
+                                <label>Kode KPI</label>
+                                <input type="text" placeholder="Masukkan Kode KPI" name="kode" class="form-control" id="data_kode_add" readonly="readonly">
                               </div>
                               <div class="form-group">
-                                <label>Nilai Maksimal</label>
-                                <input type="text" placeholder="Masukkan Maksimal" name="max" class="form-control">
+                                <label>KPI</label>
+                                <textarea name="kpi" class="form-control" placeholder="Masukkan KPI" style="padding-top: 10px;"></textarea>
                               </div>
-                            </div>
-                            <div class="form-group">
-                              <label>KPI Utama</label>
+                              <!-- <div class="form-group">
+                                <label>Perumusan</label>
+                                <br><p class="text-muted">Jika Bobot Penalty Parameter[A]=<b style="background-color: yellow;color: #000;"> 5</b>% dan Parameter [B]=<b style="background-color: yellow;color: #000;"> 10</b>% maka isikan <b style="background-color: yellow;color: #000;"> 5;10 </b></p>
+                                <p class="text-muted">Kosongkan Jika Tidak Berlaku Perumusan</p>
+                                <input type="text" placeholder="Masukkan Rumus" name="rumus" class="form-control">
+                              </div> -->
+                              <div class="form-group">
+                                <label>Unit / Satuan</label>
+                                <input type="text" placeholder="Masukkan Unit / Satuan" name="unit" class="form-control" required="required">
+                              </div>
+                              <div class="form-group">
+                                <label>Detail Rumus</label>
+                                <textarea name="detail_rumus" class="form-control" placeholder="Masukkan Detail Rumus" style="padding-top: 10px;"></textarea>
+                              </div>
+                              <div class="form-group">
+                                <label>Sumber Data</label>
+                                <input type="text" placeholder="Masukkan Sumber Data" name="sumber_data" class="form-control" required="required">
+                              </div>
+                              <div class="form-group">
+                                <label>Cara Menghitung</label>
+                                <select class="form-control select2" style="width: 100%;" name="cara_menghitung" id="data_cara_menghitung_add">
+                                </select>
+                              </div>
+                              <div class="form-group">
+                                <label>Kaitan Nilai</label>
                                 <?php
-                                $yesno[null] = 'Pilih Data';
-                                $sel5 = array(null);
-                                $ex5 = array('class'=>'form-control select2','style'=>'width:100%;','required'=>'required','id'=>'kpi_utama_add');
-                                echo form_dropdown('kpi_utama',$yesno,$sel5,$ex5);
+                                $sel = array(null);
+                                $ex = array('class'=>'form-control select2','style'=>'width:100%;','required'=>'required','id'=>'data_kaitan_add');
+                                echo form_dropdown('kaitan',$kaitan,$sel,$ex);
                                 ?>
-                            </div>
-                            <div class="panel panel-primary">
-                              <div class="panel-heading">Batasan Poin KPI</div>
-                              <div class="panel-body">
-                                <p class="text-muted" style="padding-left: 10px;">Kosongkan jika tidak ada poin dan satuan!</p>
-                                <div class="form-group">
-                                  <label>Jenis Batasan Poin</label>
-                                  <select class="form-control select2" style="width: 100%;" name="batasan_poin" id="data_batasan_poin_add">
-                                  </select>
-                                </div>
-                                <div class="form-group">
-                                  <label class="checkbox">Lebih Dari Batasan Maksimal Poin
-                                    <input type="checkbox" name="lebih_max" id="data_lebih_max_add" value="1">
-                                    <span class="checkmark"></span>
-                                  </label>
-                                </div>
-                                <?php for ($i=1; $i <= $this->otherfunctions->poin_max_range(); $i++) { ?>
-                                <div class="col-md-4">
-                                  <label>Poin <?php echo $i; ?></label>
-                                  <input type="text" placeholder="Masukkan Poin <?php echo $i; ?>" name="poin_<?php echo $i; ?>" id="data_poin_<?php echo $i; ?>_add" class="form-control">
-                                </div>
-                                <div class="col-md-8">
-                                  <label>Satuan <?php echo $i; ?></label>
-                                  <input type="text" placeholder="Masukkan Satuan <?php echo $i; ?>" name="satuan_<?php echo $i; ?>" id="data_satuan_<?php echo $i; ?>_add" class="form-control">
-                                </div>
-                                <?php } ?>
                               </div>
-                            </div>
-                            <div class="form-group">
-                              <button type="button" onclick="do_add()" id="btn_add" class="btn btn-success"><i class="fa fa-floppy-o"></i> Simpan</button>
-                            </div>
-                          </form>
+                              <div class="form-group">
+                                <label>Jenis Satuan</label>
+                                <?php
+                                $sel1 = array(null);
+                                $ex1 = array('class'=>'form-control select2','style'=>'width:100%;','required'=>'required','id'=>'data_jenis_satuan_add');
+                                echo form_dropdown('jenis_satuan',$jenis_satuan,$sel1,$ex1);
+                                ?>
+                              </div>
+                              <div class="form-group">
+                                <label>Sifat</label>
+                                <?php
+                                $sel3 = array(null);
+                                $ex3 = array('class'=>'form-control select2','style'=>'width:100%;','required'=>'required','id'=>'data_sifat_add');
+                                echo form_dropdown('sifat',$sifat,$sel3,$ex3);
+                                ?>
+                              </div>
+                              <div class="form-group">
+                                <label>Untuk Bagian Jabatan</label>
+                                <select class="form-control select2" style="width: 100%;" name="bagian" id="data_bagian_add">
+                                </select>
+                              </div>
+                              <div id="show_min_max_add">
+                                <div class="form-group">
+                                  <label>Nilai Minimal</label>
+                                  <input type="text" placeholder="Masukkan Minimal" name="min" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                  <label>Nilai Maksimal</label>
+                                  <input type="text" placeholder="Masukkan Maksimal" name="max" class="form-control">
+                                </div>
+                              </div>
+                              <div class="form-group">
+                                <label>KPI Utama</label>
+                                  <?php
+                                  $yesno[null] = 'Pilih Data';
+                                  $sel5 = array(null);
+                                  $ex5 = array('class'=>'form-control select2','style'=>'width:100%;','required'=>'required','id'=>'kpi_utama_add');
+                                  echo form_dropdown('kpi_utama',$yesno,$sel5,$ex5);
+                                  ?>
+                              </div>
+                              <div class="panel panel-primary">
+                                <div class="panel-heading">Batasan Poin KPI</div>
+                                <div class="panel-body">
+                                  <p class="text-muted" style="padding-left: 10px;">Kosongkan jika tidak ada poin dan satuan!</p>
+                                  <div class="form-group">
+                                    <label>Jenis Batasan Poin</label>
+                                    <select class="form-control select2" style="width: 100%;" name="batasan_poin" id="data_batasan_poin_add">
+                                    </select>
+                                  </div>
+                                  <div class="form-group">
+                                    <label class="checkbox">Lebih Dari Batasan Maksimal Poin
+                                      <input type="checkbox" name="lebih_max" id="data_lebih_max_add" value="1">
+                                      <span class="checkmark"></span>
+                                    </label>
+                                  </div>
+                                  <?php for ($i=1; $i <= $this->otherfunctions->poin_max_range(); $i++) { ?>
+                                  <div class="col-md-4">
+                                    <label>Poin <?php echo $i; ?></label>
+                                    <input type="text" placeholder="Masukkan Poin <?php echo $i; ?>" name="poin_<?php echo $i; ?>" id="data_poin_<?php echo $i; ?>_add" class="form-control">
+                                  </div>
+                                  <div class="col-md-8">
+                                    <label>Satuan <?php echo $i; ?></label>
+                                    <input type="text" placeholder="Masukkan Satuan <?php echo $i; ?>" name="satuan_<?php echo $i; ?>" id="data_satuan_<?php echo $i; ?>_add" class="form-control">
+                                  </div>
+                                  <?php } ?>
+                                </div>
+                              </div>
+                              <div class="form-group">
+                                <button type="button" onclick="do_add()" id="btn_add" class="btn btn-success"><i class="fa fa-floppy-o"></i> Simpan</button>
+                              </div>
+                            </form>
+                          </div>
                         </div>
-                        </div><?php } ?>
+                      <?php } ?>
                       </div>
                     </div>
                     <br>
@@ -210,7 +211,7 @@
                         <div class="callout callout-warning">
                           <b><i class="fa fa-warning"></i> Peringatan</b>
                           <p>Jika Anda melakukan <b>EDIT</b> pada data Master KPI, maka <b>Agenda KPI </b><b class="err">(yang belum dilakukan Validasi)</b> maupun <b>Rancangan KPI</b> juga akan ikut terupdate sesuai dengan data yang Anda edit <b class="err">[TIDAK BERLAKU UNTUK PROSES IMPORT DATA]</b></p>
-                        </div>                 
+                        </div>
                         <table id="table_data" class="table table-bordered table-striped table-responsive" width="100%">
                           <thead>
                             <tr>

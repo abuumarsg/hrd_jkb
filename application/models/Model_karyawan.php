@@ -1079,6 +1079,7 @@ class Model_karyawan extends CI_Model
 		j.nama as nama_mengetahui,
 		k.nama as jbt_mengetahui,
 		l.nama as nama_jabatan,
+		bag.nama as nama_bagian,
 		m.nama as nama_loker,
 		n.nama as nama_menyetujui,
 		o.nama as jbt_menyetujui,
@@ -1094,6 +1095,7 @@ class Model_karyawan extends CI_Model
 		$this->db->join('karyawan AS j', 'j.id_karyawan = a.mengetahui', 'left');
 		$this->db->join('master_jabatan AS k', 'k.kode_jabatan = j.jabatan', 'left');
 		$this->db->join('master_jabatan AS l', 'l.kode_jabatan = h.jabatan', 'left');
+		$this->db->join('master_bagian AS bag', 'bag.kode_bagian = l.kode_bagian', 'left');
 		$this->db->join('master_loker AS m', 'm.kode_loker = h.loker', 'left');
 		$this->db->join('karyawan AS n', 'n.id_karyawan = a.menyetujui', 'left');
 		$this->db->join('master_jabatan AS o', 'o.kode_jabatan = n.jabatan', 'left');

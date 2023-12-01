@@ -2811,7 +2811,9 @@ class Employee extends CI_Controller
 				}
 				echo json_encode($datax);
 			}elseif ($usage == 'kode') {
-				$data = $this->codegenerator->kodePerjanjianKerja();
+				$kode = $this->uri->segment(4);
+				$code = empty($kode) ? null : $kode;
+				$data = $this->codegenerator->kodePerjanjianKerja($code);
         		echo json_encode($data);
 			}elseif ($usage == 'getagreementend') {
 	  			$data_agg=$this->model_karyawan->getAgreementEnd();
@@ -5646,10 +5648,15 @@ class Employee extends CI_Controller
  		$kode_perjanjian = $this->input->post('kode');
 		$data=$this->model_karyawan->cekPilihStatusKaryawan($kode_perjanjian);
 		$select='';
-            foreach ($data as $d) {
-            	$select.='<option value="'.$d->kode_status.'">'.$d->nama_status.'</option>';
-        	}
-		$datax=['status_karyawan'=>$select];
+		$nama_status='';
+		foreach ($data as $d) {
+			$select.='<option value="'.$d->kode_status.'">'.$d->nama_status.'</option>';
+			$nama_status .= $d->nama_status;
+		}
+		$datax=[
+			'status_karyawan'=>$select,
+			'nama_status'=>$nama_status,
+		];
 		echo json_encode($datax);
  	}
 	public function data_pesan(){
