@@ -52,14 +52,17 @@ class Payroll {
 					$emp = $this->CI->model_payroll->getEmployeeWhere(['emp.loker'=>$pd->kode_loker,'bag.id_bagian'=>$val_bag,'emp.kode_penggajian'=>$periode['kode_master_penggajian']],1);
 					foreach ($emp as $e) {
 						$tgl_masuk = date('Y-m-d',strtotime($e->tgl_masuk));
-						$tgl_mulai = date('Y-m-d',strtotime($periode['tgl_mulai']));
-						if($dtroot['adm']['level'] == 0 && $dtroot['adm']['jenis_admin'] == 'superadmin'){
-							$kary = $this->CI->model_payroll->getEmployeeWhere(['emp.id_karyawan'=>$e->id_karyawan],1,true);
-							$karyawan[$e->id_karyawan] = $this->cekAgendaPayroll($kary);
-						}else{
-							if(in_array($e->id_karyawan,$en_access_idKar)){
+						// $tgl_mulai = date('Y-m-d',strtotime($periode['tgl_mulai']));
+						$tgl_selesai = date('Y-m-d',strtotime($periode['tgl_selesai']));
+						if($tgl_masuk < $tgl_selesai){
+							if($dtroot['adm']['level'] == 0 && $dtroot['adm']['jenis_admin'] == 'superadmin'){
 								$kary = $this->CI->model_payroll->getEmployeeWhere(['emp.id_karyawan'=>$e->id_karyawan],1,true);
 								$karyawan[$e->id_karyawan] = $this->cekAgendaPayroll($kary);
+							}else{
+								if(in_array($e->id_karyawan,$en_access_idKar)){
+									$kary = $this->CI->model_payroll->getEmployeeWhere(['emp.id_karyawan'=>$e->id_karyawan],1,true);
+									$karyawan[$e->id_karyawan] = $this->cekAgendaPayroll($kary);
+								}
 							}
 						}
 						// if($dtroot['adm']['level'] == 0){
@@ -86,14 +89,16 @@ class Payroll {
 				$empx = $this->CI->model_payroll->getEmployeeWhere(['emp.loker'=>$pd->kode_loker,'bag.id_bagian'=>$id_bagian,'emp.kode_penggajian'=>$periode['kode_master_penggajian']],1);
 				foreach ($empx as $e) {
 					$tgl_masuk = date('Y-m-d',strtotime($e->tgl_masuk));
-					$tgl_mulai = date('Y-m-d',strtotime($periode['tgl_mulai']));
-					if($dtroot['adm']['level'] == 0 && $dtroot['adm']['jenis_admin'] == 'superadmin'){
-						$kary = $this->CI->model_payroll->getEmployeeWhere(['emp.id_karyawan'=>$e->id_karyawan],1,true);
-						$karyawan[$e->id_karyawan] = $this->cekAgendaPayroll($kary);
-					}else{
-						if(in_array($e->id_karyawan,$en_access_idKar)){
+					$tgl_selesai = date('Y-m-d',strtotime($periode['tgl_selesai']));
+					if($tgl_masuk < $tgl_selesai){
+						if($dtroot['adm']['level'] == 0 && $dtroot['adm']['jenis_admin'] == 'superadmin'){
 							$kary = $this->CI->model_payroll->getEmployeeWhere(['emp.id_karyawan'=>$e->id_karyawan],1,true);
 							$karyawan[$e->id_karyawan] = $this->cekAgendaPayroll($kary);
+						}else{
+							if(in_array($e->id_karyawan,$en_access_idKar)){
+								$kary = $this->CI->model_payroll->getEmployeeWhere(['emp.id_karyawan'=>$e->id_karyawan],1,true);
+								$karyawan[$e->id_karyawan] = $this->cekAgendaPayroll($kary);
+							}
 						}
 					}
 					// if($dtroot['adm']['level'] == 0){

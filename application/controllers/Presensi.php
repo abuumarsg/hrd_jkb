@@ -6552,11 +6552,21 @@ class Presensi extends CI_Controller
 		$id_karyawan = $this->input->post('id_karyawan');
 		$jam_mulai = $this->input->post('jam_mulai');
 		$jam_selesai = $this->input->post('jam_selesai');
+		$dijadikan_alpa = $this->input->post('dijadikan_alpa');
 		if ($id != "") {
-			$data_p=[
-				'jam_mulai'=>$this->formatter->timeFormatDb($jam_mulai),
-				'jam_selesai'=>$this->formatter->timeFormatDb($jam_selesai),
-			];
+			if($dijadikan_alpa == 'on'){
+				$data_p = [
+					'alpa'=>'1',
+					'jam_mulai'=>null,
+					'jam_selesai'=>null,
+				];
+			}else{
+				$data_p=[
+					'alpa'=>null,
+					'jam_mulai'=>$this->formatter->timeFormatDb($jam_mulai),
+					'jam_selesai'=>$this->formatter->timeFormatDb($jam_selesai),
+				];
+			}
 			$data=array_merge($data_p,$this->model_global->getCreateProperties($this->admin));
 			$datax = $this->model_global->updateQuery($data,'data_presensi',['id_p_karyawan'=>$id]);
 		}
@@ -7302,9 +7312,13 @@ class Presensi extends CI_Controller
 					$x_terlambat = $plg_tlcp;
 					$x_hari_libur = $this->otherfunctions->getLabelMark($d->nama_libur,'success','Jam Kerja');
 					$aksi = '<button type="button" class="btn btn-info btn-sm" href="javascript:void(0)" onclick="view_modal_harian('.$d->id_p_karyawan.')"><i class="fa fa-info-circle" data-toggle="tooltip" title="Detail Data"></i></button>';
+					$dijadikan_alpa = null;
+					if($d->alpa == '1'){
+						$dijadikan_alpa = '<br><label class="label label-sm label-danger label-xs"><i class="fa fa-times"></i> Dijadikan Alpa</label>';
+					}
 					$datax['data'][]=[
 						$d->id_p_karyawan,
-						$d->nama_karyawan,
+						$d->nama_karyawan.$dijadikan_alpa,
 						$d->nama_jabatan,
 						$this->formatter->getDateMonthFormatUser($d->tanggal),
 						$x_jam_masuk,

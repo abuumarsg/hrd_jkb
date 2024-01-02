@@ -6710,7 +6710,7 @@ class Pages extends CI_Controller
 				$where="a.create_by = '40' OR a.create_by = '76'";
 				// $where=['a.create_by'=>$this->admin,'a.kode_master_penggajian'=>'BULANAN'];
 			}
-			$periode = $this->model_payroll->getDataLogPayroll($where,0,'a.kode_periode');
+			$periode = $this->model_payroll->getDataLogPayroll($where,0,'a.kode_periode', 'a.id_pay DESC');
 			$data=[
 				'access'=>$this->access,
 				'id_admin'=>$this->admin,

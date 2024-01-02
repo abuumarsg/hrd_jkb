@@ -168,6 +168,8 @@
 																</div>
 															</div>
 														</div>
+														<input type="hidden" name="tgl_Lahir_add" id="tgl_Lahir_add" class="form-control pull-right date-picker">
+														<input type="hidden" id="status_karyawanNew">
 														<div class="form-group">
 															<label class="col-sm-3 control-label">Berlaku Sampai</label>
 															<div class="col-sm-9">
@@ -527,19 +529,26 @@
 	}
 	function cekKodePerjanjian(kode_perjanjian) {
 		var status = $('#data_perjanjian_add').val();
-			if(status=='PTSP'){
-				$('#div_nonaktif').show();
-			}else if(status=='RSGN'){
-				$('#div_nonaktif').show();
-			}else{
-				$('#div_nonaktif').hide();
-			}
+		if(status=='PTSP'){
+			$('#div_nonaktif').show();
+		}else if(status=='RSGN'){
+			$('#div_nonaktif').show();
+		}else{
+			$('#div_nonaktif').hide();
+		}
 		var data={kode:status};
 		var callback=getAjaxData("<?php echo base_url('employee/cek_kode_perjanjian')?>",data);
 		$('#status_karyawan').html(callback['status_karyawan']);
+		$('#status_karyawanNew').val(callback['nama_status']);
 		if(callback['nama_status'] == 'TETAP'){
 			refreshCode('JK');
+			var data = {nik : $('#nik').val()};
+			var cbx = getAjaxData("<?php echo base_url('employee/perjanjian_kerja/getTanggalMasuk')?>", data); 
+			$('#tgl_berlaku_baru_add').datepicker('setDate', cbx['tanggal_masuk']);
+			$('#tgl_Lahir_add').datepicker('setDate', cbx['tanggal_lahir']);
 		}else{
+			$('#tgl_berlaku_baru_add').datepicker('setDate', "<?=date('d/m/Y')?>");
+			$('#berlaku_sampai_baru_add').datepicker('setDate', "<?=date('d/m/Y')?>");
 			refreshCode();
 		}
 	}
@@ -555,11 +564,15 @@
 		$('#modal_pilih_karyawan').modal('hide');
 	});
 	$(document).ready(function(){
-	// function ubah(){
-		$('#data_perjanjian_add, #tgl_berlaku_baru_add').change(function(){
+		$('#data_perjanjian_add, #tgl_berlaku_baru_add, #tgl_Lahir_add').change(function(){
 			var ij = $('#data_perjanjian_add').val();
-			var ik = $('#tgl_berlaku_baru_add').val();
 			var nik = $('#nik').val();
+			var statusKaryawanNew = $('#status_karyawanNew').val();
+			if(statusKaryawanNew == 'TETAP'){
+				var ik = $('#tgl_Lahir_add').val();
+			}else{
+				var ik = $('#tgl_berlaku_baru_add').val();
+			}
 			$.ajax({
 				method : "POST",
 				url   : '<?php echo base_url('employee/tanggal_janji')?>',

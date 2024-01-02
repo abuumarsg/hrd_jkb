@@ -27,7 +27,7 @@
 								<div class="row">
 									<div class="col-md-12">
 										<div class="pull-left">
-											<?php if (in_array($access['l_ac']['add'], $access['access'])) {
+											<?php if (in_array($access['l_ac']['petugas_payroll'], $access['access'])) {
 												echo '<button class="btn btn-success" id="btn_tambah" type="button" data-toggle="collapse" data-target="#add" aria-expanded="false" aria-controls="import"><i class="fa fa-plus"></i> Tambah</button>';
 											}?>
 										</div>
@@ -37,7 +37,7 @@
 										</div>
 									</div>
 								</div>
-								<?php if(in_array($access['l_ac']['add'], $access['access'])){?>
+								<?php if(in_array($access['l_ac']['petugas_payroll'], $access['access'])){?>
 									<div class="collapse" id="add">
 										<!-- <div class="callout callout-info">
 											<label><i class="fa fa-info-circle"></i> Bantuan</label>
@@ -186,7 +186,7 @@
 				</div>
 			</div>
 			<div class="modal-footer">
-				<?php if (in_array($access['l_ac']['edt'], $access['access'])) {
+				<?php if (in_array($access['l_ac']['petugas_payroll'], $access['access'])) {
 					echo '<button type="submit" class="btn btn-info" onclick="edit_modal()"><i class="fa fa-edit"></i> Edit</button>';
 				}?>
 				<button type="button" class="btn btn-default" data-dismiss="modal">Kembali</button>

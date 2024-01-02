@@ -44,7 +44,8 @@ table.DTFC_Cloned tbody{
 											echo '<option></option>';
 											foreach ($periode as $p) {
 												$wktime = strtoupper($this->formatter->getNameOfMonth(date("m",strtotime($p->tgl_selesai)))).' '.date("Y",strtotime($p->tgl_selesai));
-												echo '<option value="'.$p->kode_periode.'">'.$p->nama_periode.' ('.$p->nama_sistem_penggajian.') - '.$wktime.'</option>';
+												echo '<option value="'.$p->kode_periode.'">'.$p->nama_periode.'</option>';
+												// echo '<option value="'.$p->kode_periode.'">'.$p->nama_periode.' ('.$p->nama_sistem_penggajian.') - '.$wktime.'</option>';
 											}
 											?>
 										</select>

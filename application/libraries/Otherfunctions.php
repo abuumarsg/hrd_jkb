@@ -707,11 +707,22 @@ class Otherfunctions {
             }else{
                 $status=$this->CI->messages->not_allow();
             }
+            if (isset($val['access']['l_ac']['petugas_payroll'])) {
+                $var_stPP=($val['status'] == 1) ? '<i class="fa fa-toggle-on stat scc" title="Tidak Diijinkan"></i>':'<i class="fa fa-toggle-off stat err" title="Tidak Diijinkan"></i>';
+                $statusPP=(in_array($val['access']['l_ac']['petugas_payroll'], $val['access']['access']) && isset($val['access']['l_ac']['petugas_payroll']))  ? $status : $var_stPP;
+            }else{
+                $statusPP=$this->CI->messages->not_allow();
+            }
         }
         if (isset($val['access']['l_ac']['del'])) {
             $delete = (in_array($val['access']['l_ac']['del'], $val['access']['access'])) ? '<button type="button" class="btn btn-danger btn-sm"  href="javascript:void(0)" onclick=delete_modal('.$val['id'].')><i class="fa fa-trash" data-toggle="tooltip" title="Hapus Data"></i></button> ' : null;
         }else{
             $delete = null;
+        }
+        if (isset($val['access']['l_ac']['petugas_payroll'])) {
+            $deletePP = (in_array($val['access']['l_ac']['petugas_payroll'], $val['access']['access'])) ? '<button type="button" class="btn btn-danger btn-sm"  href="javascript:void(0)" onclick=delete_modal('.$val['id'].')><i class="fa fa-trash" data-toggle="tooltip" title="Hapus Data"></i></button> ' : null;
+        }else{
+            $deletePP = null;
         }
         $info = '<button type="button" class="btn btn-info btn-sm" href="javascript:void(0)" onclick=view_modal('.$val['id'].')><i class="fa fa-info-circle" data-toggle="tooltip" title="Detail Data"></i></button> ';
         if (isset($val['access']['l_ac']['prn'])) {
@@ -752,6 +763,8 @@ class Otherfunctions {
             'status2'=>$status2,
             'info2'=>$info2,
             'delete2'=>$delete2,
+            'deletePP'=>$deletePP,
+            'statusPP'=>$statusPP,
         ];
         return $data;
     }
@@ -2832,7 +2845,7 @@ class Otherfunctions {
 						$datax = $this->CI->model_global->updateQuery($data,'karyawan',['id_karyawan'=>$e->id_karyawan]);
 					}
 				}
-                $this->model_global->updateQuery(['status'=>'0'],'history_reset_cuti',['tahun'=>($date['tahun']-1), 'flag'=>'SYNC JULI']);
+                $this->CI->model_global->updateQuery(['status'=>'0'],'history_reset_cuti',['tahun'=>($date['tahun']-1), 'flag'=>'SYNC JULI']);
 				$this->insertToHistoryResetCuti('SYNC JAN', 'Sinkron Data Cuti Berhasil', $datetime, $date['tahun']);
                 $datax = 'true';
 			}else{
@@ -2853,7 +2866,7 @@ class Otherfunctions {
 					$sisaCuti = (($sisaCutiDB >= $cutiReal) ? $cutiReal : $sisaCutiDB);
 					$datax = $this->CI->model_global->updateQuery(['sisa_cuti' => $sisaCuti],'karyawan',['id_karyawan'=>$k->id_karyawan]);
 				}
-                $this->model_global->updateQuery(['status'=>'0'],'history_reset_cuti',['tahun'=>$date['tahun'], 'flag'=>'SYNC JAN']);
+                $this->CI->model_global->updateQuery(['status'=>'0'],'history_reset_cuti',['tahun'=>$date['tahun'], 'flag'=>'SYNC JAN']);
 				$this->insertToHistoryResetCuti('SYNC JULI', 'Sinkron Data Cuti Juli Berhasil', $datetime, $date['tahun']);
                 $datax = 'true';
 			}else{

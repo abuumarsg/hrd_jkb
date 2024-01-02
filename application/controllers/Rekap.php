@@ -2415,12 +2415,16 @@ class Rekap extends CI_Controller
 		$unit = $this->input->get('unit_export');
 		$status_validasi = $this->input->get('status_validasi');
 		$potong_jam = $this->input->get('potong_jam');
-		$bagianx=(!empty($bagian)) ? ["d.kode_bagian" => $bagian] : [];	
+		$bagianx=(!empty($bagian)) ? ["jbt.kode_bagian" => $bagian] : [];	
 		$unitx=(!empty($unit)) ? ["b.loker" => $unit] : [];
 		$status_validasix=(!empty($status_validasi)) ? ["a.validasi" => $status_validasi] : [];
 		$potong_jamx=(!empty($potong_jam)) ? ["a.status_potong" => $potong_jam] : [];
 		$where = array_merge($bagianx,$unitx,$status_validasix,$potong_jamx);
 		$getdata=$this->model_karyawan->getDataLemburAll($where, $bagian, $tanggal);
+		// echo '<pre>';
+		// print_r($potong_jamx);
+		// print_r($where);
+		// print_r($getdata);
 		$dataPerKaryawan = [];
 		$user = $this->dtroot;
 		$data['properties']=[

@@ -153,6 +153,48 @@ class General extends CI_Controller
 		}
 		echo json_encode($datax);
 	}
+	function send_otp(){
+		if (!$this->input->is_ajax_request()) 
+			redirect('not_found');
+		$nomor=$this->input->post('email');
+		$param=$this->input->post('param');
+		if($param == 'emp'){
+			$emp = $this->model_karyawan->getEmployeeWhere(['emp.no_hp'=>$nomor, 'emp.status_emp'=>'1'], true);
+			$id_emp_adm = $emp['id_karyawan'];
+		}else{
+			$emp = $this->model_admin->getAdminWhere2(['a.hp'=>$nomor, 'a.status_adm'=>'1'], true);
+			$id_emp_adm = $emp['id_admin'];
+		}
+		if(!empty($emp)){
+			$expired_date = date('Y-m-d H:i:s', strtotime($this->date . ' +59 Minute'));
+			$token      = rand(0, 999999);
+			$pesan = '[CV Jati Kencana] : Rahasia Kode OTP anda untuk reset password adalah *'.$token.'*, Berlaku 5 Menit. '.$this->date.'.';
+			$data4db = [
+				'id_emp_adm'=>$id_emp_adm,
+				'param' => $param,
+				'nomor' => $nomor,
+				'expired_date' => $expired_date,
+				'nama'=>$emp['nama'],
+				'token'=>$token,
+				'encrypt'=>$pesan,
+				'for'=>'reset password',
+				'status'=>1,
+				'create_date'=>$this->date,
+			];
+			$send = $this->curl->sendwaapi($nomor, $pesan);
+			$this->model_global->insertQuery($data4db,'short_url');
+			$datax = [
+				'message'=>'Pesan Terkirim, Silahkan Ikuti Petunjuk melalui Whatsapp',
+				'status'=>'true',
+			];
+		}else{
+			$datax = [
+				'message'=>'INVALID',
+				'status'=>'false',
+			];
+		}
+		echo json_encode($datax);
+	}
 	function getDataLupaPassword(){
 		$token = $this->uri->segment(3);
 		$dataShort = $this->model_global->getDataShortUrl(['token'=>$token,'status'=>'1']);
@@ -175,6 +217,17 @@ class General extends CI_Controller
 			$this->load->view('utama/link_expired');
 			$this->load->view('admin_tem/footer');
 		}
+	}
+	function confirmNumberOTP(){
+		$nomor = $this->input->post('nomor');
+		$emp = $this->model_karyawan->getEmployeeWhere(['emp.no_hp'=>$nomor], true);
+		$data = [
+			'nomor'=>$nomor,
+			'emp'=>$emp,
+		];
+		$this->load->view('admin_tem/header');
+		$this->load->view('utama/confirmotp', $data);
+		$this->load->view('admin_tem/footer');
 	}
 	function submit_new_password(){
 		if (!$this->input->is_ajax_request()) 

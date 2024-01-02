@@ -2840,6 +2840,17 @@ class Employee extends CI_Controller
 						'value'=>$ada,
 					];
         		echo json_encode($data);
+			}elseif ($usage == 'getTanggalMasuk') {
+				$datax = [];
+				$nik = $this->input->post('nik');
+				if(!empty($nik)){
+					$emp = $this->model_karyawan->getEmployeeNik($nik);
+					$datax = [
+						'tanggal_masuk'=> $this->formatter->getDateFormatUser($emp['tgl_masuk']),
+						'tanggal_lahir'=> $this->formatter->getDateFormatUser($emp['tgl_lahir']),
+					];
+				}
+        		echo json_encode($datax);
 			}else{
 				echo json_encode($this->messages->notValidParam());
 			}

@@ -510,7 +510,7 @@ class Model_payroll extends CI_Model
 		return $query;
 	}
 
-	public function getDataLogPayroll($where = null, $status = 0, $group_by = null)
+	public function getDataLogPayroll($where = null, $status = 0, $group_by = null, $order_by = null)
 	{
 		$this->db->select('
 			a.*,
@@ -548,7 +548,11 @@ class Model_payroll extends CI_Model
 		}
 		if(!empty($where)){ $this->db->where($where); }
 		if(!empty($group_by)){ $this->db->group_by($group_by); }
-		$this->db->order_by('a.tgl_masuk','asc');
+		if(!empty($order_by)){ 
+			$this->db->order_by($order_by);
+		}else{
+			$this->db->order_by('a.tgl_masuk','asc');
+		}
 		$query = $this->db->get()->result();
 		return $query;
 	}

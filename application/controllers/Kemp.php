@@ -2090,9 +2090,13 @@ class Kemp extends CI_Controller
 		$kode_izin  = $this->input->post('jenis');
 		$tanggal    = $this->input->post('tanggal');
 		$msg = null;
+		// echo '<pre>';
+		// echo $kode_izin.'<br>';
 		if($kode_izin == 'MIC201907160001'){
 			$dataCuti = $this->model_karyawan->getListIzinCutiWhereMaxID(['id_karyawan'=>$id_kar,'jenis'=>$kode_izin,'validasi !='=>'0']);
 			$tgl_awal   = $this->formatter->getDateFromRange($tanggal,'start');
+			// print_r($dataCuti);
+			// echo $dataCuti['tgl_selesai'].' > '.$tgl_awal;
 			if(strtotime($dataCuti['tgl_selesai']) > strtotime($tgl_awal)){
 				$msg = 'Anda belum bisa mengajukan Cuti Tahunan karena Tanggal yang anda input harus melewati terakhir kali anda cuti';
 			}else{

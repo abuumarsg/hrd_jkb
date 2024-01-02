@@ -98,7 +98,8 @@
 														<label>Pilih Periode Penggajian</label>
 														<select class="form-control select2" name="kode_periode" id="data_periode_copy" style="width: 100%;">
 															<?php
-															$periode = $this->model_master->getListPeriodeLembur(['a.create_by'=>$id_admin,'a.kode_master_penggajian'=>'BULANAN'],null,1);
+															$periode = $this->model_master->getListPeriodeLembur(['a.kode_master_penggajian'=>'BULANAN'],null,1);
+															// $periode = $this->model_master->getListPeriodeLembur(['a.create_by'=>$id_admin,'a.kode_master_penggajian'=>'BULANAN'],null,1);
 															echo '<option></option>';
 															foreach ($periode as $p) {
 																echo '<option value="'.$p->kode_periode_lembur.'">'.$p->nama.' ('.$p->nama_sistem_penggajian.')</option>';

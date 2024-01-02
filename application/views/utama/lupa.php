@@ -43,17 +43,26 @@
       $('#kirimnotifadm').hide();
     }
   });
+  // function do_send_email(param) {
+  //   var nomor = $('#input_nomor').val();
+  //   var datax = {param:param,email:nomor};
+  //   const dtx =submitAjaxCall("<?php echo base_url('general/send_nomor_forget')?>", datax, 'status');
+  //   if(dtx['status'] == 'true'){
+  //     $('#message_callback').html(dtx['message']).css('color','#00A65A');
+  //     $('#input_nomor').val('');
+  //     $('#kirimnotif').hide();
+  //     $('#kirimnotifadm').hide();
+  //     $('#notif_input_nomor').hide();
+  //   }else{
+  //     $('#message_callback').html(dtx['message']).css('color','#DD4B39');
+  //   }
+  // }
   function do_send_email(param) {
     var nomor = $('#input_nomor').val();
-    var datax = {param:param,email:nomor};
-    // submitAjax("<?php // echo base_url('general/send_nomor_forget')?>",null,datax,null,null,'status');
-    const dtx =submitAjaxCall("<?php echo base_url('general/send_nomor_forget')?>", datax, 'status');
+    var datax = {param:param,nomor:nomor};
+    const dtx =submitAjaxCall("<?php echo base_url('general/send_otp')?>", datax, 'status');
     if(dtx['status'] == 'true'){
-      $('#message_callback').html(dtx['message']).css('color','#00A65A');
-      $('#input_nomor').val('');
-      $('#kirimnotif').hide();
-      $('#kirimnotifadm').hide();
-      $('#notif_input_nomor').hide();
+      $.redirect("<?php echo base_url('general/confirmNumberOTP'); ?>", datax, "POST");
     }else{
       $('#message_callback').html(dtx['message']).css('color','#DD4B39');
     }

@@ -178,7 +178,7 @@
 									<?php 
 									echo form_open('rekap/export_izin_cuti');
 									if (in_array($access['l_ac']['add'], $access['access'])) {
-										echo '<button class="btn btn-success" type="button" id="btn_tambah" data-toggle="collapse" data-target="#add" aria-expanded="false" aria-controls="import" style="margin-right: 5px;"><i class="fa fa-plus"></i> Tambah Data</button>';
+										// echo '<button class="btn btn-success" type="button" id="btn_tambah" data-toggle="collapse" data-target="#add" aria-expanded="false" aria-controls="import" style="margin-right: 5px;"><i class="fa fa-plus"></i> Tambah Data</button>';
 									}
 									echo '<button class="btn btn-info" type="button" id="btn_sisa_cuti"><i class="fa fa-eye"></i> Lihat Sisa Cuti</button> ';
 									if (in_array($access['l_ac']['rkp'], $access['access'])) {

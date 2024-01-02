@@ -46,7 +46,7 @@
 										<?php
 												echo '<option></option>';
 												foreach ($periode as $p) {
-													echo '<option value="'.$p->kode_periode_penggajian.'">'.$p->nama.' ('.$p->nama_sistem_penggajian.')</option>';
+													echo '<option value="'.$p->kode_periode_penggajian.'">'.$p->nama.'</option>';
 												}
 											?>
 									</select>
@@ -146,7 +146,7 @@
 																	// $periode = $this->model_master->getPeriodePenggajian(['a.status_gaji'=>0,'a.status'=>1],null,1);
 																	echo '<option></option>';
 																	foreach ($periode as $p) {
-																		echo '<option value="'.$p->kode_periode_penggajian.'">'.$p->nama.' ('.$p->nama_sistem_penggajian.')</option>';
+																		echo '<option value="'.$p->kode_periode_penggajian.'">'.$p->nama.'</option>';
 																	}
 																	?>
 																</select>
@@ -213,7 +213,7 @@
 																				
 																				echo '<option></option>';
 																				foreach ($periode as $p) {
-																					echo '<option value="'.$p->kode_periode_penggajian.'">'.$p->nama.' ('.$p->nama_sistem_penggajian.')</option>';
+																					echo '<option value="'.$p->kode_periode_penggajian.'">'.$p->nama.'</option>';
 																				}
 																				?>
 																			</select>
@@ -475,7 +475,7 @@
 							
 							echo '<option></option>';
 							foreach ($periode as $p) {
-								echo '<option value="'.$p->kode_periode_penggajian.'">'.$p->nama.' ('.$p->nama_sistem_penggajian.')</option>';
+								echo '<option value="'.$p->kode_periode_penggajian.'">'.$p->nama.'</option>';
 							}
 							?>
 						</select>

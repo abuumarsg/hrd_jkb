@@ -782,6 +782,8 @@ class Cpayroll extends CI_Controller
 						'angsuran_ke'=>0,
 					];
 				}
+				// echo '<pre>';
+				// print_r($dataPay);
 				$ijin_cuti = $this->payroll->getIjinCutiSimple($dataPay['getIzinCuti'],$from,$to);
 				$ijin_nominal = $this->payroll->getUpahIjinCuti($ijin_cuti,$value['gaji_pokok'],$value['tgl_masuk']);
 				$potTerlambat = $this->model_master->getGeneralSetting('POT_TERLAMBAT')['value_int'];
@@ -1928,24 +1930,28 @@ class Cpayroll extends CI_Controller
 		if($usage == 'pindah'){
 			$id_admin = $this->admin;
 			$total = 0;
-			$data = $this->model_payroll->getDataPayrollSingle(['create_by'=>$id_admin,'kode_master_penggajian'=>'BULANAN','kode_periode'=>$kode_periode]);
+			// $data = $this->model_payroll->getDataPayrollSingle(['create_by'=>$id_admin,'kode_master_penggajian'=>'BULANAN','kode_periode'=>$kode_periode]);
+			$data = $this->model_payroll->getDataPayrollSingle(['kode_master_penggajian'=>'BULANAN','kode_periode'=>$kode_periode]);
 			foreach ($data as $d) {
-				$new_data = $this->model_payroll->getDataPayrollSingle(['id_pay'=>$d->id_pay,'create_by'=>$id_admin]);
+				$new_data = $this->model_payroll->getDataPayrollSingle(['id_pay'=>$d->id_pay]);
 				$new_data = $this->otherfunctions->convertResultToRowArray($new_data);
 				unset($new_data['id_pay']);
 				$new_data=array_merge($new_data,$this->model_global->getUpdateProperties($this->admin));
-				$this->model_global->insertUpdateQueryNoMsg($new_data,'log_data_penggajian',['id_karyawan'=>$new_data['id_karyawan'],'bulan'=>$new_data['bulan'],'tahun'=>$new_data['tahun'],'kode_periode'=>$new_data['kode_periode']]);
+				$move = $this->model_global->insertUpdateQueryNoMsg($new_data,'log_data_penggajian',['id_karyawan'=>$new_data['id_karyawan'],'bulan'=>$new_data['bulan'],'tahun'=>$new_data['tahun'],'kode_periode'=>$new_data['kode_periode']]);
+				if($move){
+					$this->model_global->deleteQuery('data_penggajian',['id_karyawan'=>$new_data['id_karyawan'],'bulan'=>$new_data['bulan'],'tahun'=>$new_data['tahun'],'kode_periode'=>$new_data['kode_periode']]);
+				}
 				$total += $d->gaji_bersih;
 			}
 			// $kode_periode = $this->otherfunctions->convertResultToRowArray($data)['kode_periode'];
 
-			$data_tunjangan = $this->model_payroll->getDataPayrollTunjanganSingle(['kode_master_penggajian'=>$kode_periode,'kode_master_penggajian'=>'BULANAN']);
-			foreach ($data_tunjangan as $dt) {
-				$new_data_t = $this->model_payroll->getDataPayrollTunjanganSingle(['id_pay_t'=>$dt->id_pay_t]);
-				$new_data_t = $this->otherfunctions->convertResultToRowArray($new_data_t);
-				unset($new_data_t['id_pay_t']);
-				$this->model_global->insertUpdateQueryNoMsg($new_data_t,'log_data_penggajian_tunjangan',['id_karyawan'=>$new_data_t['id_karyawan'],'kode_periode_penggajian'=>$new_data_t['kode_periode_penggajian']]);
-			}
+			// $data_tunjangan = $this->model_payroll->getDataPayrollTunjanganSingle(['kode_master_penggajian'=>$kode_periode,'kode_master_penggajian'=>'BULANAN']);
+			// foreach ($data_tunjangan as $dt) {
+			// 	$new_data_t = $this->model_payroll->getDataPayrollTunjanganSingle(['id_pay_t'=>$dt->id_pay_t]);
+			// 	$new_data_t = $this->otherfunctions->convertResultToRowArray($new_data_t);
+			// 	unset($new_data_t['id_pay_t']);
+			// 	$this->model_global->insertUpdateQueryNoMsg($new_data_t,'log_data_penggajian_tunjangan',['id_karyawan'=>$new_data_t['id_karyawan'],'kode_periode_penggajian'=>$new_data_t['kode_periode_penggajian']]);
+			// }
 			$data_periode =[
 				'status_gaji'=>1,
 				'tgl_transfer'=>date('Y-m-d'),
@@ -1953,8 +1959,8 @@ class Cpayroll extends CI_Controller
 			];
 			$data_periode=array_merge($data_periode,$this->model_global->getUpdateProperties($this->admin));
 			$this->model_global->updateQuery($data_periode,'data_periode_penggajian',['kode_periode_penggajian'=>$kode_periode]);
-			$this->model_global->deleteQuery('data_penggajian',['kode_periode'=>$kode_periode,'kode_master_penggajian'=>'BULANAN']);
-			$this->model_global->deleteQuery('data_penggajian_tunjangan',['kode_periode_penggajian'=>$kode_periode,'kode_master_penggajian'=>'BULANAN']);
+			// $this->model_global->deleteQuery('data_penggajian',['kode_periode'=>$kode_periode,'kode_master_penggajian'=>'BULANAN']);
+			// $this->model_global->deleteQuery('data_penggajian_tunjangan',['kode_periode_penggajian'=>$kode_periode,'kode_master_penggajian'=>'BULANAN']);
 			$datax = $this->messages->allGood();
 		}else{
 			$datax = $this->messages->notValidParam();

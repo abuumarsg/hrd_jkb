@@ -1061,6 +1061,7 @@ class Model_karyawan extends CI_Model
 		h.nama as nama_karyawan,
 		h.tempat_lahir as tempat_lahir,
 		h.tgl_lahir as tgl_lahir,
+		h.tgl_masuk as tgl_masuk,
 		h.alamat_asal_jalan as alamat_asal_jalan,
 		h.alamat_asal_desa as alamat_asal_desa,
 		h.alamat_asal_kecamatan as alamat_asal_kecamatan,
@@ -1995,7 +1996,7 @@ class Model_karyawan extends CI_Model
 		return $this->model_global->checkCode($code,'data_karyawan_tidak_aktif','no_sk');
 	}
 	public function emp_finger($id){
-		return $this->db->get_where('karyawan',array('id_finger'=>$id))->result();
+		return $this->db->get_where('karyawan', array('id_finger'=>$id, 'status_emp'=>'1'))->result();
 	}
 	public function getEmployeeFinger($id_finger)
 	{
@@ -2564,7 +2565,7 @@ class Model_karyawan extends CI_Model
 	{
 		$this->db->select('a.*');
 		$this->db->from('data_izin_cuti_karyawan AS a');
-		$this->db->where("id_izin_cuti = (SELECT max(id_izin_cuti) FROM data_izin_cuti_karyawan x WHERE x.id_karyawan = a.id_karyawan)");
+		$this->db->where("id_izin_cuti = (SELECT max(id_izin_cuti) FROM data_izin_cuti_karyawan x WHERE x.id_karyawan = a.id_karyawan AND x.jenis = 'MIC201907160001')");
 		$this->db->where($where);
 		$query=$this->db->get()->row_array();
 		// $query=$this->db->get()->result();

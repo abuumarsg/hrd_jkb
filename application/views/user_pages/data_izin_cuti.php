@@ -455,52 +455,61 @@ $foto = $this->otherfunctions->getFotoValue($profile['foto'],$profile['kelamin']
 			var tgl_izin=getAjaxData("<?php echo base_url('kemp/tanggalIzin')?>",datax);
 			var tgl_ini=getAjaxData("<?php echo base_url('kemp/cekTanggalIzin')?>",datax);
 			var sisacuti=getAjaxData("<?php echo base_url('kemp/cekSisaCuti')?>",datax);
+			var minCuti=getAjaxData("<?php echo base_url('kemp/minCuti')?>",datax);
 			if (tgl_izin['jenis'] == 'C') {
 				if (tgl_izin['hari'] > tgl_izin['maksimal']) {
 					$('#div_span_tgl').html(tgl_izin['msg']).css('color','red');
-					$('#btn_save').attr('disabled','disabled');
+					var value1 = 1;
 				}else{
 					$('#div_span_tgl').html(tgl_izin['msg']).css('color','green');
-					$('#btn_save').removeAttr('disabled','disabled');   
+					var value1 = 2;
 				}
 			}else{
 				if (tgl_izin['maksimal'] < tgl_izin['hari']) {
 					$('#div_span_tgl').html(tgl_izin['msg']).css('color','red');
-					$('#btn_save').attr('disabled','disabled');
+					var value1 = 3;
 				}else{
 					$('#div_span_tgl').html(tgl_izin['msg']).css('color','green');
-					$('#btn_save').removeAttr('disabled','disabled'); 
+					var value1 = 4;
 				}
 				$('#div_span_sisa_cuti').html(sisacuti['msg']).css('color','green');
-				$('#btn_save').prop('disabled', false);  
+				// var value1 = 5;
 			};
 			if (tgl_ini['cek'] > 0) {
 				$('#div_span_tgl_izin').html(tgl_ini['msg']).css('color','red');
-				$('#btn_save').attr('disabled','disabled');
+				var value2 = 6;
 			}else{
 				$('#div_span_tgl_izin').html(tgl_ini['msg']).css('color','green');
-				$('#btn_save').removeAttr('disabled','disabled'); 
+				var value2 = 7;
 			};
 			if (tgl_izin['jenis'] == 'C' && sisacuti['potong_cuti'] == '1') {
 				if (sisacuti['sisa_cuti'] >= sisacuti['hari']) {
 					$('#div_span_sisa_cuti').html(sisacuti['msg']).css('color','green');
-					$('#btn_save').removeAttr('disabled','disabled'); 
+					var value3 = 8;
 				}else{
 					$('#div_span_sisa_cuti').html(sisacuti['msg']).css('color','red');
-					$('#btn_save').attr('disabled','disabled');
+					var value3 = 9;
 				}
 			}else if (tgl_izin['jenis'] == 'C' && sisacuti['potong_cuti'] != '1') {
 				$('#div_span_sisa_cuti').html(sisacuti['msg']).css('color','green');
-				$('#btn_save').prop('disabled', false);
+				var value3 = 10;
 			}
-			var minCuti=getAjaxData("<?php echo base_url('kemp/minCuti')?>",datax);
 			if (minCuti['msg'] == '' || minCuti['msg'] == null) {
 				$('#div_span_notif_min_cuti').html('').css('color','green');
-				$('#btn_save').prop('disabled', false);
+				var value4 = 11;
 			}else{
 				$('#div_span_notif_min_cuti').html(minCuti['msg']).css('color','red');
-				$('#btn_save').prop('disabled', true);
+				var value4 = 12;
 			}
+			if(value1 == '1' || value1 == '3' || value2 == '6' || value3 == '9' || value4 == '12'){
+				$('#btn_save').prop('disabled', true);
+			}else if(value1 == '2' || value1 == '4' || value2 == '7' || value3 == '8' || value3 == '10' || value4 == '11'){
+				$('#btn_save').prop('disabled', false);
+			}
+			// console.log('value1 : '+value1);
+			// console.log('value2 : '+value2);
+			// console.log('value3 : '+value3);
+			// console.log('value4 : '+value4);
 		})
 		$('#btn_sisa_cuti').click(function() {
 			$('#sisa_cuti').modal('show');

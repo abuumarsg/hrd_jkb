@@ -129,6 +129,9 @@ class Cetak_word extends CI_Controller {
                             'jabatan_mengetahui'=>$datax['jbt_mengetahui'],
                             'gaji'=>$this->formatter->getFormatMoneyUser($gaji_pokok),
                             'gaji_terbilang'=>$this->formatter->kataTerbilang($gaji_pokok),
+                            'tanggal_masuk'=>$this->formatter->getDateMonthFormatUser($datax['tgl_masuk']),
+                            'menyetujui'=>$datax['nama_menyetujui'],
+                            'jabatan_menyetujui'=>$datax['jbt_menyetujui'],
                         ]
                 	];
         			$this->wordgenerator->genDoc($data,$datax['nama_file']);

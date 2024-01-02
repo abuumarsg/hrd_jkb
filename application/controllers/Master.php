@@ -7715,7 +7715,8 @@ class Master extends CI_Controller
 			$id_admin = $this->admin;
 			if ($usage == 'view_all') {
 				if($this->dtroot['adm']['level'] != 0){
-					$data=$this->model_master->getPeriodePenggajian(['a.create_by'=>$id_admin,'a.kode_master_penggajian'=>'BULANAN']);
+					$data=$this->model_master->getPeriodePenggajian(['a.kode_master_penggajian'=>'BULANAN']);
+					// $data=$this->model_master->getPeriodePenggajian(['a.create_by'=>$id_admin,'a.kode_master_penggajian'=>'BULANAN']);
 				}else{
 					$data=$this->model_master->getPeriodePenggajian(['a.kode_master_penggajian'=>'BULANAN']);
 				}
@@ -9608,7 +9609,7 @@ class Master extends CI_Controller
 			$where=[];
 			$level=((isset($this->dtroot['adm']['level']))?$this->dtroot['adm']['level']:null);
 			if ($level > 0){
-				$where['a.create_by'] = $this->admin;
+				// $where['a.create_by'] = $this->admin;
 			}	
 			if ($usage == 'view_all') {
 				$data=$this->model_master->getListPeriodeLembur($where);
@@ -9784,7 +9785,8 @@ class Master extends CI_Controller
 		$bulan = $this->input->post('bulan');
 		$tahun = $this->input->post('tahun');
 		if ($kode != "") {
-			$cekData = $this->model_master->getListPeriodeLembur(['a.bulan'=>$bulan,'a.tahun'=>$tahun,'a.create_by'=>$this->admin]);
+			// $cekData = $this->model_master->getListPeriodeLembur(['a.bulan'=>$bulan,'a.tahun'=>$tahun,'a.create_by'=>$this->admin]);
+			$cekData = $this->model_master->getListPeriodeLembur(['a.bulan'=>$bulan,'a.tahun'=>$tahun]);
 			if(empty($cekData)){
 				if($selesai > $mulai){
 						$data = array(
@@ -9840,7 +9842,8 @@ class Master extends CI_Controller
 		$periodeBefore=$this->otherfunctions->convertResultToRowArray($cekData);
 		$bulan = $this->input->post('bulan');
 		$tahun = $this->input->post('tahun');
-		$cekDatath = $this->model_master->getListPeriodeLembur(['a.kode_old_periode'=>$kode,'a.bulan'=>$bulan,'a.tahun'=>$tahun,'a.create_by'=>$this->admin]);
+		// $cekDatath = $this->model_master->getListPeriodeLembur(['a.kode_old_periode'=>$kode,'a.bulan'=>$bulan,'a.tahun'=>$tahun,'a.create_by'=>$this->admin]);
+		$cekDatath = $this->model_master->getListPeriodeLembur(['a.kode_old_periode'=>$kode,'a.bulan'=>$bulan,'a.tahun'=>$tahun]);
 		if(empty($cekDatath)){
 			$dataPeriode = [
 				'kode_periode_lembur'   =>$kodePeriodeLembur,
@@ -10136,8 +10139,8 @@ class Master extends CI_Controller
 						$d->nama_petugas,
 						$jml_peserta,
 						$properties['tanggal'],
-						$properties['status'],
-						$properties['aksi']
+						$properties['statusPP'],
+						$properties['info'].$properties['deletePP'],
 					];
 					$no++;
 				}
@@ -10374,8 +10377,8 @@ class Master extends CI_Controller
 						$d->nama_petugas,
 						$jml_peserta,
 						$properties['tanggal'],
-						$properties['status'],
-						$properties['aksi']
+						$properties['statusPP'],
+						$properties['info'].$properties['deletePP'],
 					];
 					$no++;
 				}
@@ -10552,8 +10555,8 @@ class Master extends CI_Controller
 						$d->nama_petugas,
 						$jml_peserta,
 						$properties['tanggal'],
-						$properties['status'],
-						$properties['aksi']
+						$properties['statusPP'],
+						$properties['info'].$properties['deletePP'],
 					];
 					$no++;
 				}
