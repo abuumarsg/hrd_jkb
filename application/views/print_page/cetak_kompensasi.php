@@ -103,7 +103,7 @@
 	}
 </style>
 <?php 
-    $alamat = $data['alamat_asal_jalan'].', Desa '.$data['alamat_asal_desa'].', KEC. '.$data['alamat_asal_kecamatan'].', KAB. '.$data['alamat_asal_kabupaten'];
+    $alamat = ucwords(strtolower($data['alamat_asal_jalan'])).', Desa '.ucwords(strtolower($data['alamat_asal_desa'])).', Kec. '.ucwords(strtolower($data['alamat_asal_kecamatan'])).', Kab. '.ucwords(strtolower($data['alamat_asal_kabupaten']));
     if($data['jenis_gaji'] == 'matrix'){
         $gaji_pokok = $data['gapok'];
     }else{
@@ -130,12 +130,12 @@
 			<tr>
 				<td width="40%" class="font-14">Nama</td>
 				<td width="2%" class="font-14"> : </td>
-				<td width="58%" style="text-align: left;" class="font-14"><?=$data['nama_karyawan']?></td>
+				<td width="58%" style="text-align: left;" class="font-14"><?=ucwords(strtolower($data['nama_karyawan']))?></td>
 			</tr>
 			<tr>
 				<td width="40%" class="font-14">Tempat & tanggal lahir</td>
 				<td width="2%" class="font-14"> : </td>
-				<td width="58%" style="text-align: left;" class="font-14"><?=$data['tempat_lahir'].', '.$this->formatter->getDateMonthFormatUser($data['tgl_lahir'])?></td>
+				<td width="58%" style="text-align: left;" class="font-14"><?=ucwords(strtolower($data['tempat_lahir'])).', '.$this->formatter->getDateMonthFormatUser($data['tgl_lahir'])?></td>
 			</tr>
 			<tr>
 				<td width="40%" class="font-14">Alamat</td>
@@ -150,12 +150,12 @@
 			<tr>
 				<td width="40%" class="font-14">Jabatan</td>
 				<td width="2%" class="font-14"> : </td>
-				<td width="58%" style="text-align: left;" class="font-14"><?=$data['nama_jabatan']?></td>
+				<td width="58%" style="text-align: left;" class="font-14"><?=ucwords(strtolower($data['nama_jabatan']))?></td>
 			</tr>
 			<tr>
 				<td width="40%" class="font-14">Plant</td>
 				<td width="2%" class="font-14"> : </td>
-				<td width="58%" style="text-align: left;" class="font-14"><?=$data['nama_loker']?></td>
+				<td width="58%" style="text-align: left;" class="font-14"><?=ucwords(strtolower($data['nama_loker']))?></td>
 			</tr>
 			<tr>
 				<td width="40%" class="font-14">Gaji pokok</td>
@@ -180,7 +180,7 @@
 			<tr>
 				<td width="40%" class="font-14">Status</td>
 				<td width="2%" class="font-14"> : </td>
-				<td width="58%" style="text-align: left;" class="font-14"><?php echo $status; echo (($status == 'DIPERPANJANG') ? ' '.$lama_perjanjian_baru.' Bulan' : null)?></td>
+				<td width="58%" style="text-align: left;" class="font-14"><?php echo $status; echo (($status == 'Diperpanjang' || $status == 'DIPERPANJANG') ? ' '.$lama_perjanjian_baru.' Bulan' : null)?></td>
 			</tr>
 		</table>
 		<br>
@@ -224,16 +224,16 @@
 				<td style="padding-top: 80px;"></td>
 			</tr>
 			<tr width="25%">
-				<td style="text-align: center;"><b><u><?=$menyetujui_1['nama']?></u><b></td>
-				<td style="text-align: center;"><b><u><?=$menyetujui_2['nama']?></u><b></td>
-				<td style="text-align: center;"><b><u><?=$mengetahui['nama']?></u><b></td>
-				<td style="text-align: center;"><b><u><?=$dibuat['nama']?></u><b></td>
+				<td style="text-align: center;"><b><u><?=ucwords(strtolower($menyetujui_1['nama']))?></u><b></td>
+				<td style="text-align: center;"><b><u><?=ucwords(strtolower($menyetujui_2['nama']))?></u><b></td>
+				<td style="text-align: center;"><b><u><?=ucwords(strtolower($mengetahui['nama']))?></u><b></td>
+				<td style="text-align: center;"><b><u><?=ucwords(strtolower($dibuat['nama']))?></u><b></td>
 			</tr>
 			<tr>
-				<td style="text-align: center;"><?=$menyetujui_1['nama_jabatan']?></td>
-				<td style="text-align: center;"><?=$menyetujui_2['nama_jabatan']?></td>
-				<td style="text-align: center;"><?=$mengetahui['nama_jabatan']?></td>
-				<td style="text-align: center;"><?=$dibuat['nama_jabatan']?></td>
+				<td style="text-align: center;"><?=ucwords(strtolower($menyetujui_1['nama_jabatan']))?></td>
+				<td style="text-align: center;"><?=ucwords(strtolower($menyetujui_2['nama_jabatan']))?></td>
+				<td style="text-align: center;"><?=ucwords(strtolower($mengetahui['nama_jabatan']))?></td>
+				<td style="text-align: center;"><?=ucwords(strtolower($dibuat['nama_jabatan']))?></td>
 			</tr>
 		</table>
 	</div>

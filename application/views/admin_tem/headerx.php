@@ -241,6 +241,16 @@ onscroll="reset_interval()">
         </ul> -->
         <div class="navbar-custom-menu">
           <ul class="nav navbar-nav">
+          <?php if (in_array($adm['access']['l_ac']['tidak_absen_masuk'], $adm['access']['access'])) { ?>
+            <li class="dropdown notifications-menu">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" title="Tidak Absen Masuk" onclick="refreshNotAbsenIn()">
+                <i class="fas fa-user-tag"></i>
+                <span class="badge" style="background-color: red" id="count_NotAbsenIn"></span>
+              </a>
+              <ul class="dropdown-menu" style="max-height: 300px;overflow: auto; width: 440px" id="value_NotAbsenIn">
+              </ul>
+            </li>
+          <?php } ?>
           <?php if (in_array($adm['access']['l_ac']['notif_izin'], $adm['access']['access'])) { ?>
             <li class="dropdown notifications-menu">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" title="Izin Cuti Belum Divalidasi" onclick="refreshIzinCuti()">
@@ -609,7 +619,7 @@ onscroll="reset_interval()">
     var value_agreement_end=$('#value_agreement_end');
     var count_lembur_end=$('#id_lembur').val();
     $(document).ready(function() {
-      // refreshAgree();refreshMsg();refreshKuotaLembur();refreshAlpa();refreshIzinCuti();
+      refreshAgree();refreshMsg();refreshKuotaLembur();refreshAlpa();refreshIzinCuti();
       // alert(count_lembur_end);
       if(count_lembur_end == 1){
         refreshLembur();
@@ -623,6 +633,15 @@ onscroll="reset_interval()">
             $('#count_Alpa').html('');
         }
         $('#value_Alpa').html(callback['value']);
+    }
+    function refreshNotAbsenIn() {
+        var callback=getAjaxData('<?php echo base_url('presensi/data_presensi/getNotAbsenIn'); ?>',null);
+        if (callback['count'] > 0) {
+            $('#count_NotAbsenIn').html(callback['count']);
+        }else{
+            $('#count_NotAbsenIn').html('');
+        }
+        $('#value_NotAbsenIn').html(callback['value']);
     }
     function refreshIzinCuti() {
         var callback=getAjaxData('<?php echo base_url('presensi/izin_cuti_harian/notYetValidate'); ?>',null);

@@ -2902,7 +2902,7 @@ class Pages extends CI_Controller
 			'menyetujui_2'	=> $menyetujui_2,
 			'mengetahui'	=> $mengetahui,
 			'dibuat'		=> $dibuat,
-			'status'		=> $form['perjanjian_baru'],
+			'status'		=> ucwords(strtolower($form['perjanjian_baru'])),
 			'lama_perjanjian_baru'		=> $form['lama_perjanjian_baru'],
 		];
 		$this->load->view('print_page/header');

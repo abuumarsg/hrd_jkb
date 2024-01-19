@@ -453,8 +453,10 @@
 			</div>
 		<?php } ?>
 		<?php $totalAk = $nilai_akhir+$datax['val_nominal_bbm']+$datax['val_total_penginapan']+$totalKodeAkun;?>
+		<hr>
 		<table width="100%">
             <tr>
+                <td class="font" style="float:left;"><b>Divalidasi oleh	: <?=$datax['nama_validasi']?></b></td>
                 <td class="font" style="float:right;"><b>Total Seluruh Biaya	:	<?=$this->formatter->getFormatMoneyUser($totalAk)?></b></td>
             </tr>
 		</table>
@@ -835,6 +837,7 @@ if(!empty($koreksiAll)){
 		<?php $totalAk = $nilai_akhirx+$koreksiOne['val_nominal_bbm']+$koreksiOne['val_total_penginapan']+$totalKodeAkun;?>
 		<table width="100%">
 			<tr>
+                <td class="font" style="float:left;"><b>Divalidasi oleh	: <?=$datax['nama_validasi']?></b></td>
 				<td class="font" style="float:right;"><b>Total Seluruh Biaya	:	<?=$this->formatter->getFormatMoneyUser($totalAk)?></b></td>
 			</tr>
 		</table>

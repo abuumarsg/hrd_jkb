@@ -3424,6 +3424,7 @@ class Model_karyawan extends CI_Model
 		$sc="SELECT a.*,(select count(*) from data_perjalanan_dinas cnt where cnt.no_sk = a.no_sk) as jum,
 		b.nama as nama_buat,
 		c.nama as nama_update,
+		val.nama as nama_validasi,
 		d.nama as nama_karyawan,
 		d.nik as nik_karyawan,
 		jbt.nama as nama_jabatan,
@@ -3441,6 +3442,7 @@ class Model_karyawan extends CI_Model
 		FROM data_perjalanan_dinas a
 		LEFT JOIN admin b ON b.id_admin = a.create_by 
 		LEFT JOIN admin c ON c.id_admin = a.update_by
+		LEFT JOIN admin val ON val.id_admin = a.validate_by
 		LEFT JOIN karyawan d ON d.id_karyawan = a.id_karyawan
 		LEFT JOIN master_jabatan jbt ON jbt.kode_jabatan = d.jabatan
 		LEFT JOIN master_loker f ON f.kode_loker = d.loker
@@ -3473,10 +3475,12 @@ class Model_karyawan extends CI_Model
 		n.nama as nama_plant_tujuan,
 		o.nama as nama_plant_asal,
 		p.nama as val_nama_kendaraan_j,
+		val.nama as nama_validasi,
 		');
 		$this->db->from('data_perjalanan_dinas AS a');
 		$this->db->join('admin AS b', 'b.id_admin = a.create_by', 'left'); 
 		$this->db->join('admin AS c', 'c.id_admin = a.update_by', 'left');
+		$this->db->join('admin AS val', 'val.id_admin = a.validate_by', 'left');
 		$this->db->join('karyawan AS d', 'd.id_karyawan = a.id_karyawan', 'left');
 		$this->db->join('master_jabatan AS e', 'e.kode_jabatan = d.jabatan', 'left');
 		$this->db->join('master_bagian AS bag', 'bag.kode_bagian = e.kode_bagian', 'left');

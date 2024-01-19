@@ -3709,7 +3709,8 @@ class Presensi extends CI_Controller
 							if($d->validasi_ac==2){
 								$validasi = '<button type="button" class="btn btn-warning btn-sm" href="javascript:void(0)" onclick=modal_need("'.$d->no_sk.'")><i class="fa fa-warning"></i> Perlu Validasi</button> ';
 							}elseif($d->validasi_ac==1){
-								$validasi = '<button type="button" class="btn btn-success btn-sm" href="javascript:void(0)" onclick=modal_yes("'.$d->no_sk.'")><i class="fa fa-check-circle"></i> Diizinkan</button> ';
+								$namaValidasi = (!empty($d->nama_validasi) ? '<br><label class="label label-success">Divalidasi Oleh '.$d->nama_validasi.'</label>' : null );
+								$validasi = '<button type="button" class="btn btn-success btn-sm" href="javascript:void(0)" onclick=modal_yes("'.$d->no_sk.'")><i class="fa fa-check-circle"></i> Diizinkan</button> '.$namaValidasi;
 							}elseif($d->validasi_ac==0){
 								$validasi = '<button type="button" class="btn btn-danger btn-sm" href="javascript:void(0)" onclick=modal_no("'.$d->no_sk.'")><i class="fa fa-times-circle"></i> Tidak DIizinkan</button> ';
 							}
@@ -5282,13 +5283,15 @@ class Presensi extends CI_Controller
 				'val_jenis_hotel'=>(isset($form['kelas_hotel'])?$form['kelas_hotel']:null),
 				'val_jumlah_kamar'=>(isset($form['jumlah_kamar'])?$form['jumlah_kamar']:null),
 				'val_jumlah_hari'=>(isset($form['jumlah_hari'])?$form['jumlah_hari']:null),
-				'val_total_penginapan'=>(isset($form['total_penginapan'])?$this->formatter->getFormatMoneyDb($form['total_penginapan']):null),				
+				'val_total_penginapan'=>(isset($form['total_penginapan'])?$this->formatter->getFormatMoneyDb($form['total_penginapan']):null),
+				'validate_by'=>$this->admin,
+				'validate_date'=>$this->date,
 			];
 		}elseif($val_db==1 && $vali==0){
-			$data=[	'validasi_ac'=>$vali,'val_kendaraan'=>null,'val_kendaraan_umum'=>null,'val_jum_kendaraan'=>null,'val_nominal_bbm'=>null,'val_menginap'=>null,'val_penginapan'=>null,'val_nominal_penginapan'=>null, 'status_pd'=>3,
+			$data=[	'validasi_ac'=>$vali,'val_kendaraan'=>null,'val_kendaraan_umum'=>null,'val_jum_kendaraan'=>null,'val_nominal_bbm'=>null,'val_menginap'=>null,'val_penginapan'=>null,'val_nominal_penginapan'=>null, 'status_pd'=>3,	'validate_by'=>null, 'validate_date'=>null,
 			];
 		}else{
-			$data=[	'validasi_ac'=>$vali,'val_kendaraan'=>null,'val_kendaraan_umum'=>null,'val_jum_kendaraan'=>null,'val_nominal_bbm'=>null,'val_menginap'=>null,'val_penginapan'=>null,'val_nominal_penginapan'=>null, 'status_pd'=>3,
+			$data=[	'validasi_ac'=>$vali,'val_kendaraan'=>null,'val_kendaraan_umum'=>null,'val_jum_kendaraan'=>null,'val_nominal_bbm'=>null,'val_menginap'=>null,'val_penginapan'=>null,'val_nominal_penginapan'=>null, 'status_pd'=>3,	'validate_by'=>null, 'validate_date'=>null,
 			];
 		}
 		if($val_db != 1 && $vali != 0){
@@ -6893,6 +6896,36 @@ class Presensi extends CI_Controller
 							$newTgl = implode(', ', $tgl);
 							$ada.='<li><a href="#"><i class="fas fa-user-times"></i>  '.$key.' | <small style="color:red; font-size:8pt;">'.($jabatan).'</small> <small class="text-muted pull-right" title="Tanggal Alpa">'.$newTgl.'</small></a></li>';
 							$jumlahVal += 1;
+						}
+					}
+				}
+				if ($jumlahVal == 0 || $jumlahVal == null) {
+					$ada='<li class="text-center"><small class="text-muted"><i class="icon-close"></i> Tidak Ada Data</small></li><li class="divider"> </li>';
+				}
+				$datax=[	
+					'count'=>$jumlahVal,
+					'value'=>$ada,
+				];
+				echo json_encode($datax);
+			}elseif ($usage == 'getNotAbsenIn') {
+				$ada='<li class="header">Data Karyawan Tidak Absen Masuk / Presensi Masuk Kosong</li><li class="divider"></li>';
+				$tanggal_selesai =date('Y-m-d', strtotime($this->date));
+				$tanggal_mulai =date('Y-m-d', strtotime('-30 days', strtotime($tanggal_selesai)));
+				$kary = [];
+				$dtx = $this->model_karyawan->getListAbsensiHarianRange($tanggal_mulai,$tanggal_selesai,null,null,true);
+				if(!empty($dtx)){
+					$jumlahVal = 0;
+					foreach ($dtx as $dx) {
+						if($dx->kode_jabatan != 'JBT201901160029' && $dx->kode_jabatan != 'JBT201901160064' && $dx->kode_jabatan != 'JBT201901160067' && $dx->kode_jabatan != 'JBT201901160133' && $dx->kode_jabatan != 'JBT201909040009' && $dx->kode_jabatan != 'JBT202104010001' && $dx->kode_jabatan != 'JBT201901160065'){
+							$libur =  $this->otherfunctions->checkHariLiburActive($dx->tanggal);
+							if(!isset($libur) && empty($dx->jam_mulai) && empty($dx->kode_hari_libur) && empty($dx->kode_ijin)){
+								$kary[$dx->nama_karyawan][] = [
+									'tanggal'=>$dx->tanggal,
+									'jabatan'=>$dx->nama_jabatan
+								];
+								$ada.='<li><a href="#"><i class="fas fa-user-tag"></i>  '.$dx->nama_karyawan.' | <small style="color:red; font-size:8pt;">'.($dx->nama_jabatan).'</small> <small class="text-muted pull-right" title="Tanggal">'.$this->formatter->getDateMonthFormatUser($dx->tanggal).'</small></a></li>';
+								$jumlahVal += 1;
+							}
 						}
 					}
 				}
